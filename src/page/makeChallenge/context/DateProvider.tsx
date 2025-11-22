@@ -10,7 +10,9 @@ interface DateContextType {
 const DateContext = createContext<DateContextType | null>(null);
 
 export const DateProvider = ({ children }: { children: React.ReactNode }) => {
-  const [startDate, setStartDate] = useState('');
+  const today = new Date().toISOString().split('T')[0];
+
+  const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState('');
 
   return (

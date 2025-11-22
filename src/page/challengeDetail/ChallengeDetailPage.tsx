@@ -55,6 +55,34 @@ const ChallengeDetailPage = () => {
     );
   }
 
+  const [challenge, setChallenge] = useState<ChallengeReseponse | null>(null);
+  const [, setLoading] = useState(true);
+  const [snaps, setSnaps] = useState<ChallengeSnapItem[]>([]);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchData = async () => {
+      try {
+        // 챌린지 정보
+        const challengeRes = await challengeGet.getChallengeInfo(Number(id));
+        setChallenge(challengeRes.data);
+
+        // 스냅 정보
+        const snapRes = await snapGet.getAllSnapsInChallenge({ challengeId: Number(id) });
+        setSnaps(snapRes.data);
+      } catch (err) {
+        console.error('챌린지 상세 조회 실패:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  if (!challenge) return;
+
   return (
     <div className="min-h-screen">
       <Header variant="back" />
@@ -121,7 +149,19 @@ const ChallengeDetailPage = () => {
 
       {/* Slide CTA */}
       <div className="fixed bottom-5 left-0 w-full px-5">
-        <SlideButton text="참여하기" onComplete={() => navigate(`/challenge-detail/${id}/join`)} />
+        <SlideButton
+          text="참여하기"
+          onComplete={() =>
+            navigate(`/challenge-detail/${id}/join`, {
+              state: {
+                title: challenge.title,
+                createdAt: challenge.createdAt,
+                endAt: challenge.endAt,
+                participantsCount: challenge.participantsCount,
+              },
+            })
+          }
+        />
       </div>
     </div>
   );

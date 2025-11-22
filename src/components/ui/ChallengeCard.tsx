@@ -57,8 +57,8 @@ const ChallengeCard = ({
         <div
           className={clsx('w-24 h-24 object-cover rounded-md', imgSrc || 'bg-sihang-neutral-100')}
         >
-          <img src={imgSrc} />
-        </div>
+          <img src={imgSrc} className="w-full h-full object-cover rounded-md" />
+        </div> 
       </div>
       <div className="flex flex-col gap-1">
         {allTags.length > 0 && (

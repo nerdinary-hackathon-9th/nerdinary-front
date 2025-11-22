@@ -63,26 +63,45 @@ const ChallengeListPage = () => {
     fetchChallenges();
   }, []);
 
+  const [challenges, setChallenges] = useState<Challenge[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await challengeGet.getAllChallenge();
+        setChallenges(res.data); // 배열 그대로 저장
+      } catch (err) {
+        console.error('전체 챌린지 조회 실패:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const filteredData = useMemo(() => {
     let filtered = [...challenges];
 
-    // 검색어 필터링
-    if (searchValue.trim()) {
-      filtered = filtered.filter((item) =>
+    // 검색 필터
+    if (searchValue) {
+      result = result.filter((item) =>
         item.title.toLowerCase().includes(searchValue.toLowerCase()),
       );
     }
 
-    // 정렬
+    // 정렬 (createdAt 기준 최신순)
     if (filterValue === 'new') {
-      filtered.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
-    } else if (filterValue === 'old') {
-      filtered.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
-    } else if (filterValue === 'most') {
-      filtered.sort((a, b) => b.participant - a.participant);
-    } else if (filterValue === 'least') {
-      filtered.sort((a, b) => a.participant - b.participant);
+      result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     }
+    // 인기순 정렬 (참여자 수 기준)
+    else if (filterValue === 'most') {
+      result.sort((a, b) => b._count.participants - a._count.participants);
+    }
+
+    return result;
+  }, [searchValue, filterValue, challenges]);
 
     return filtered;
   }, [searchValue, filterValue, challenges]);

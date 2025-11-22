@@ -1,4 +1,4 @@
-import { api } from '@/lib/ky';
+import { apiVer2 } from '@/lib/ky';
 import type { ApiResponse } from '@/types/common';
 
 /* ===========================
@@ -30,11 +30,41 @@ export type MakeSnapResponseDTO = ApiResponse<MakeSnapResponse>;
 =========================== */
 
 export const snapPost = {
-  makeSnap: async ({ challengeId, userId }: { challengeId: number; userId: number }) => {
-    const response = await api
-      .post(`/api/snap/${challengeId}/${userId}`)
-      .json<MakeSnapResponseDTO>();
+  makeSnap: async ({
+    challengeId,
+    userId,
+    title,
+    content,
+    file,
+  }: {
+    challengeId: number;
+    userId: number;
+    title: string;
+    content: string;
+    file?: File | null;
+  }): Promise<MakeSnapResponseDTO> => {
+    const formData = new FormData();
 
-    return response;
+    // (1) data 객체를 JSON 문자열로 넣기
+    const jsonBody = JSON.stringify({
+      title,
+      content,
+    });
+    formData.append('data', jsonBody);
+
+    // (2) 파일 form-data 파트
+    if (file) {
+      formData.append('images', file);
+    }
+
+    // (3) multipart 전송 (Content-Type 강제 지정하면 안 됨)
+    return apiVer2
+      .post(`api/snap/${challengeId}/${userId}`, {
+        body: formData,
+        headers: {
+          'Content-Type': undefined, // ky 기본 application/json 무효화
+        },
+      })
+      .json<MakeSnapResponseDTO>();
   },
 };

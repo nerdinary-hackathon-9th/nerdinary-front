@@ -31,7 +31,7 @@ export const challengePost = {
     endAt: string;
     thumbnailUrl: string;
   }) => {
-    const response = await api.post('/api/challenge/create', {
+    const response = await api.post('api/challenge/create', {
       json: {
         title,
         context,
