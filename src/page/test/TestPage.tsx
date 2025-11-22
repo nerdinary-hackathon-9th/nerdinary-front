@@ -1,13 +1,10 @@
-import WasteList from '@/components/waste/WasteList';
+import WasteList from '@/components/ui/WasteList';
 
 const TestPage = () => {
   return (
-    <>
-      TestPage
-      <div>
-        <WasteList />
-      </div>
-    </>
+    <div>
+      <WasteList />
+    </div>
   );
 };
 
