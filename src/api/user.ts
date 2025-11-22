@@ -1,76 +1,15 @@
 import { api } from '@/lib/ky';
-
-// 로그인 요청 타입
-export interface LoginRequest {
-  nickname: string;
-  password: string;
-}
-
-// 회원가입 요청 타입
-export interface SignupRequest {
-  nickname: string;
-  password: string;
-}
-
-// API 응답 공통 구조
-export interface ApiResponse<T = unknown> {
-  success: boolean;
-  message: string;
-  data?: T;
-}
-
-// 로그인 응답 데이터
-export interface LoginData {
-  id: string;
-}
-
-// 회원가입 응답 데이터
-export interface SignupData {
-  id: string;
-}
-
-// 닉네임 중복 확인 응답 데이터
-export interface CheckNicknameData {
-  isAvailable: boolean;
-}
-
-// 챌린지 정보
-export interface ChallengeInfo {
-  id: number;
-  title: string;
-  context: string;
-  createdAt: string;
-  endAt: string;
-  thumbnailUrl: string;
-}
-
-// 참여 챌린지 정보
-export interface ParticipantChallenge {
-  challenge: ChallengeInfo;
-}
-
-// 사용자 참여 챌린지 목록 응답 데이터
-export interface UserChallengesData {
-  userChallenges: {
-    participants: ParticipantChallenge[];
-  };
-}
-
-// 챌린지 참가 요청 타입
-export interface JoinChallengeRequest {
-  userId: number;
-  challengeId: number;
-}
-
-// 챌린지 참가 응답 데이터
-export interface JoinChallengeData {
-  userChallenge: {
-    id: number;
-    createdAt: string;
-    userId: number;
-    challengeId: number;
-  };
-}
+import type {
+  ApiResponse,
+  LoginRequest,
+  LoginData,
+  SignupRequest,
+  SignupData,
+  CheckNicknameData,
+  UserChallengesData,
+  JoinChallengeRequest,
+  JoinChallengeData,
+} from '@/types/user';
 
 export const authAPI = {
   // 회원가입
@@ -112,3 +51,18 @@ export const authAPI = {
 
 // 이전 버전과의 호환성을 위해 유지
 export const userPost = authAPI;
+
+// 타입 re-export (편의성을 위해)
+export type {
+  ApiResponse,
+  LoginRequest,
+  LoginData,
+  SignupRequest,
+  SignupData,
+  CheckNicknameData,
+  UserChallengesData,
+  JoinChallengeRequest,
+  JoinChallengeData,
+  ChallengeInfo,
+  ParticipantChallenge,
+} from './types/user.types';

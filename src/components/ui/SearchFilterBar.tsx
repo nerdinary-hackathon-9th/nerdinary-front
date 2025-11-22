@@ -30,7 +30,7 @@ const SearchFilterBar = ({
           className="w-full h-10 py-2 pl-10 pr-3 bg-sihang-primary-10 text-sm placeholder:text-sihang-neutral-400 rounded-full shadow-md focus:outline-none focus:border-sihang"
         />
         {/* 메뉴 아이콘 */}
-        <LogoIcon className="absolute top-1.5 right-2" />
+        <LogoIcon className="absolute top-1.5 right-2 " />
       </div>
 
       {/* 필터 드롭다운 */}
