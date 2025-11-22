@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import SearchFilterBar from '@/components/ui/SearchFilterBar';
 import ChallengeCard from '@/components/ui/ChallengeCard';
+import { GlobalNavigationBar } from '@/app/layout/navigation/GlobalNavigationBar';
 
 const mockData = [
   {
@@ -81,6 +82,7 @@ const ChallengeList = () => {
           <ChallengeCard key={idx} {...item} />
         ))}
       </div>
+      <GlobalNavigationBar />
     </>
   );
 };
