@@ -24,10 +24,24 @@ export interface ChallengeReseponse {
   createdAt: string;
   endAt: string;
   thumbnailUrl: string;
+  participantsCount: number;
+}
+
+export interface Challenge {
+  id: number;
+  title: string;
+  context: string;
+  createdAt: string;
+  endAt: string;
+  thumbnailUrl: string;
+  _count: {
+    participants: number;
+  };
 }
 
 export type HotChallengeResponseDTO = ApiResponse<HotChallenge[]>;
 export type ChallengeReseponseDTO = ApiResponse<ChallengeReseponse>;
+export type AllChallengeResponseDTO = ApiResponse<Challenge[]>;
 /* ===========================
      Handlers
 =========================== */
@@ -40,6 +54,11 @@ export const challengeGet = {
 
   getChallengeInfo: async (challengeId: number): Promise<ChallengeReseponseDTO> => {
     const response = await api.get(`api/challenge/${challengeId}`).json<ChallengeReseponseDTO>();
+    return response;
+  },
+
+  getAllChallenge: async (): Promise<AllChallengeResponseDTO> => {
+    const response = await api.get('api/challenge/list').json<AllChallengeResponseDTO>();
     return response;
   },
 };

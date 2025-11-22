@@ -25,6 +25,7 @@ const JoinChallengePage = () => {
   const title = state?.title;
   const createdAt = state?.createdAt;
   const endAt = state?.endAt;
+  const participantsCount = state?.participantsCount;
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -64,9 +65,10 @@ const JoinChallengePage = () => {
       {/* 참여 독려 배너 */}
       {/* // TODO: 참여인원 넣기 */}
       <div className="w-full px-4 py-3 bg-linear-to-r from-sihang-primary-300 to-sihang-secondary-500 text-white text-sm">
-        지금 NUMBER이 이 챌린지에 참여중이에요!
+        지금 {participantsCount}명이 챌린지에 참여중이에요!
         <br />
-        <span className="text-sihang-primary-900">NUMBER+1번째</span> 참여자가 되어주시겠어요?
+        <span className="text-sihang-primary-900">{participantsCount + 1}번째</span>{' '}
+        참여자가 되어주시겠어요?
       </div>
       {/* 메인 컨텐츠 */}
       <div className="px-5 flex flex-col">
@@ -145,7 +147,7 @@ const JoinChallengePage = () => {
       {/* 완료 버튼 */}
       <div className="mt-auto mb-4">
         <button
-          disabled={!image || !content}
+          disabled={!imageUrl || !content}
           onClick={handleSubmit}
           className="fixed bottom-4 inset-x-4 h-14 py-3 rounded-xl bg-blue-400 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
         >

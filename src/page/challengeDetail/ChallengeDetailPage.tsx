@@ -15,6 +15,7 @@ export interface ChallengeReseponse {
   createdAt: string;
   endAt: string;
   thumbnailUrl: string;
+  participantsCount: number;
 }
 
 const formatDotDateKorea = (iso: string) => {
@@ -73,7 +74,7 @@ const ChallengeDetailPage = () => {
 
               <div className="flex items-center gap-1">
                 <PeopleIcon />
-                <span className="text-[#B4B5B9]">100명 참여중</span>
+                <span className="text-[#B4B5B9]">{challenge.participantsCount}명 참여중</span>
               </div>
             </div>
           </div>
@@ -109,6 +110,7 @@ const ChallengeDetailPage = () => {
                 title: challenge.title,
                 createdAt: challenge.createdAt,
                 endAt: challenge.endAt,
+                participantsCount: challenge.participantsCount
               },
             })
           }
