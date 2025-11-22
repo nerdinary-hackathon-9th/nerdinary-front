@@ -8,6 +8,7 @@ import CalendarIcon from '@/assets/calendar.svg?react';
 import PeopleIcon from '@/assets/people.svg?react';
 import DotIcon from '@/assets/dot.svg?react';
 import { SnapGrid } from './components/SnapGrid';
+import { formatDateKo } from '@/utils/dateFormat';
 
 const ChallengeDetailPage = () => {
   const { id } = useParams();
@@ -49,16 +50,6 @@ const ChallengeDetailPage = () => {
     );
   }
 
-  // 날짜 포맷팅 함수
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('ko-KR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    }).replace(/\. /g, '.').replace(/\.$/, '');
-  };
-
   return (
     <div className="min-h-screen">
       <Header variant="back" />
@@ -75,7 +66,7 @@ const ChallengeDetailPage = () => {
               <div className="flex items-center gap-1">
                 <CalendarIcon className="w-4 h-4" />
                 <span className="text-[#B4B5B9]  mr-1">
-                  {formatDate(challenge.createdAt)} ~ {formatDate(challenge.endAt)}
+                  {formatDateKo(challenge.createdAt)} ~ {formatDateKo(challenge.endAt)}
                 </span>
                 <DotIcon />
               </div>

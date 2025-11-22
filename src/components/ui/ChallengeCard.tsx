@@ -2,6 +2,7 @@ import CalendarIcon from '@/assets/calendar.svg?react';
 import PeopleIcon from '@/assets/people.svg?react';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
+import { formatDate } from '@/utils/dateFormat';
 
 // TODO : 실제 DTO에 따라 변경 해야 함!
 interface ChallengeCardProps {
@@ -80,7 +81,7 @@ const ChallengeCard = ({
             <div className="flex items-center gap-2">
               <CalendarIcon className="w-4 h-4" />
               <span>
-                {startDate} ~ {endDate}
+                {formatDate(startDate)} ~ {formatDate(endDate)}
               </span>
             </div>
             <div className="flex items-center gap-2">
