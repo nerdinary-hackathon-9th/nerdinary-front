@@ -40,7 +40,7 @@ export const AppRouter = () => {
           element: <ChallengeDetailPage />,
         },
         {
-          path: 'challenge-list',
+          path: 'list',
           element: <ChallengeList />,
         },
         {

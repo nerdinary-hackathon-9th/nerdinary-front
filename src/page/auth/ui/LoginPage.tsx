@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { AuthInput } from '../components/AuthInput';
 import { nicknameRegex, passwordRegex } from '../utils/regex';
+import { Header } from '@/app/layout/header/ui/Header';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -34,12 +35,7 @@ const LoginPage = () => {
   return (
     <div className="flex flex-col h-screen px-5 pt-5">
       {/* Header */}
-      <header className="h-14 flex items-center mb-4">
-        <button onClick={() => navigate('/')} className="mr-3 text-xl">
-          ←
-        </button>
-        <span className="font-semibold text-lg">로그인</span>
-      </header>
+      <Header variant="back" />
 
       {/* Input Section */}
       <section className="space-y-4">

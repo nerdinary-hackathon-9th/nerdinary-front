@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import SearchFilterBar from '@/components/ui/SearchFilterBar';
 import ChallengeCard from '@/components/ui/ChallengeCard';
 import { GlobalNavigationBar } from '@/app/layout/navigation/GlobalNavigationBar';
+import { Header } from '@/app/layout/header/ui/Header';
 
 const mockData = [
   {
@@ -71,6 +72,8 @@ const ChallengeList = () => {
 
   return (
     <>
+      <Header variant="back-text" title="낭비 할 일 리스트" />
+
       <div className="pb-20 w-full flex flex-col gap-3 items-center overflow-y-scroll">
         <SearchFilterBar
           searchValue={searchValue}
