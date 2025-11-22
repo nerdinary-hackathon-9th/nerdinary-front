@@ -1,59 +1,58 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import SearchFilterBar from '@/components/ui/SearchFilterBar';
 import ChallengeCard from '@/components/ui/ChallengeCard';
 import { GlobalNavigationBar } from '@/app/layout/navigation/GlobalNavigationBar';
 import { Header } from '@/app/layout/header/ui/Header';
-
-const mockData = [
-  {
-    title: '갑자기 바다보고 오기!!!',
-    imgSrc: '/listexam1.png',
-    startDate: '2025.11.22',
-    endDate: '2025.11.23',
-    participant: 112,
-    challengeId: 1,
-  },
-  {
-    title: '비오는 날 비 맞으면서 걷기',
-    imgSrc: '/listexam2.png',
-    startDate: '2025.11.23',
-    endDate: '2025.11.24',
-    participant: 55,
-    challengeId: 2,
-  },
-  {
-    title: '본가에 강아지 보러 다녀오기',
-    imgSrc: '/listexam3.png',
-    startDate: '2025.11.24',
-    endDate: '2025.11.25',
-    participant: 23,
-    challengeId: 3,
-  },
-
-  {
-    title: '겨울에 아이스크림 먹기!',
-    imgSrc: '/listexam4.png',
-    startDate: '2025.11.25',
-    endDate: '2025.11.26',
-    participant: 241,
-    challengeId: 4,
-  },
-  {
-    title: '잠시 노트북 덮고 쉬자',
-    imgSrc: '/listexam5.png',
-    startDate: '2025.11.26',
-    endDate: '2025.11.27',
-    participant: 79,
-    challengeId: 5,
-  },
-];
+import { challengeAPI } from '@/api/challenge/challenge';
+import type { Challenge } from '@/types/challenge';
 
 const ChallengeListPage = () => {
   const [searchValue, setSearchValue] = useState('');
   const [filterValue, setFilterValue] = useState<'new' | 'old' | 'most' | 'least'>('new');
+  const [challenges, setChallenges] = useState<Challenge[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // 챌린지 목록 가져오기
+  useEffect(() => {
+    const fetchChallenges = async () => {
+      setIsLoading(true);
+      try {
+        const response = await challengeAPI.getTodayChallenges();
+        console.log('API 응답:', response);
+
+        // 여러 가능한 응답 구조 처리
+        let challengesList: Challenge[] = [];
+        const responseData = response as unknown as {
+          data?: Challenge[];
+          challenges?: Challenge[];
+        };
+
+        if (Array.isArray(response)) {
+          // 응답이 직접 배열인 경우
+          challengesList = response as Challenge[];
+        } else if (response.challenges && Array.isArray(response.challenges)) {
+          // response.challenges가 배열인 경우
+          challengesList = response.challenges;
+        } else if (responseData.data && Array.isArray(responseData.data)) {
+          // response.data가 배열인 경우
+          challengesList = responseData.data;
+        }
+
+        console.log('파싱된 챌린지 목록:', challengesList);
+        setChallenges(challengesList);
+      } catch (error) {
+        console.error('챌린지 목록을 불러오는데 실패했습니다:', error);
+        setChallenges([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchChallenges();
+  }, []);
 
   const filteredData = useMemo(() => {
-    let filtered = [...mockData];
+    let filtered = [...challenges];
 
     // 검색어 필터링
     if (searchValue.trim()) {
@@ -74,7 +73,7 @@ const ChallengeListPage = () => {
     }
 
     return filtered;
-  }, [searchValue, filterValue]);
+  }, [searchValue, filterValue, challenges]);
 
   const handleFilterChange = (value: string) => {
     if (value === 'new' || value === 'old' || value === 'most' || value === 'least') {
@@ -94,13 +93,16 @@ const ChallengeListPage = () => {
           onFilterChange={handleFilterChange}
         />
 
-        {filteredData.length === 0 && (
+        {isLoading && <div className="py-10 text-neutral-400 text-sm">로딩 중...</div>}
+
+        {!isLoading && filteredData.length === 0 && (
           <div className="py-10 text-neutral-400 text-sm">검색 결과가 없습니다.</div>
         )}
 
-        {filteredData.map((item, idx) => (
-          <ChallengeCard key={item.challengeId || idx} {...item} />
-        ))}
+        {!isLoading &&
+          filteredData.map((item, idx) => (
+            <ChallengeCard key={item.challengeId || idx} {...item} />
+          ))}
       </div>
       <GlobalNavigationBar />
     </div>

@@ -2,6 +2,12 @@ import { api } from '@/lib/ky';
 import type { Challenge, ChallengeListParams, ChallengeListResponse } from '@/types/challenge';
 
 export const challengeAPI = {
+  // 진행중인 챌린지 목록 조회
+  getTodayChallenges: async (): Promise<ChallengeListResponse> => {
+    const response = await api.get('api/challenge/today').json<ChallengeListResponse>();
+    return response;
+  },
+
   // 챌린지 목록 조회
   getList: async (params?: ChallengeListParams): Promise<ChallengeListResponse> => {
     const searchParams = new URLSearchParams();
