@@ -8,6 +8,8 @@ interface SlideButtonProps {
 }
 
 const SlideButton = ({ text = '청춘을 낭비하러 출발', onComplete }: SlideButtonProps) => {
+  const completedRef = useRef(false);
+
   const [progress, setProgress] = useState(0);
   const [completed, setCompleted] = useState(false);
   const [progressStage, setProgressStage] = useState(0); // 0: 초기, 1: 20%, 2: 50%, 3: 70%
@@ -23,13 +25,12 @@ const SlideButton = ({ text = '청춘을 낭비하러 출발', onComplete }: Sli
     const handleMove = (ev: PointerEvent) => {
       if (!sliderRef.current) return;
       const handleWidth = sliderRef.current.querySelector('.handle')?.clientWidth ?? 52;
-      const max = sliderRef.current.clientWidth - handleWidth - 8; // prevent overflow
+      const max = sliderRef.current.clientWidth - handleWidth - 8;
 
       let next = ev.clientX - startX;
 
       if (next < 0) next = 0;
 
-      /* 이동 거리에 따른 단계 설정 */
       const progressPercent = (next / max) * 100;
       if (progressPercent >= 70) {
         setProgressStage(3);
@@ -41,16 +42,12 @@ const SlideButton = ({ text = '청춘을 낭비하러 출발', onComplete }: Sli
         setProgressStage(0);
       }
 
-      /* 정확히 끝까지 도달했을 때만 완료 처리 */
       if (next >= max) {
         next = max;
         setCompleted(true);
+        completedRef.current = true;
 
         if (navigator.vibrate) navigator.vibrate(10);
-        onComplete?.();
-
-        document.removeEventListener('pointermove', handleMove);
-        document.removeEventListener('pointerup', handleUp);
       }
 
       setProgress(next);
@@ -58,7 +55,10 @@ const SlideButton = ({ text = '청춘을 낭비하러 출발', onComplete }: Sli
 
     const handleUp = () => {
       setIsDragging(false);
-      if (!completed) {
+
+      if (completedRef.current) {
+        onComplete?.();
+      } else {
         setProgress(0);
         setProgressStage(0);
       }

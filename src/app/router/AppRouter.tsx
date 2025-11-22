@@ -1,12 +1,12 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import HomePage from '@/page/home/HomePage';
-
 import LoginPage from '@/page/auth/ui/LoginPage';
 import SignUpPage from '@/page/auth/ui/SignUpPage';
 import MakeChallengePage from '@/page/makeChallenge/MakeChallengePage';
 import JoinChallengePage from '@/page/joinChallenge/JoinChallengePage';
-import ChallengeDetailPage from '@/page/challenge/ChallengeDetail';
+import ChallengeDetailPage from '@/page/challengeDetail/ChallengeDetailPage';
+import MyPage from '@/page/mypage/MyPage';
 
 import App from '../App';
 
@@ -30,13 +30,17 @@ export const AppRouter = () => {
           element: <MakeChallengePage />,
         },
         {
-          path: 'join-challenge',
+          path: 'challenge-detail/:id/join',
           element: <JoinChallengePage />,
         },
         {
           // Todo : api endpoint에 맞춰 path 수정해야 함!
-          path: 'challenge',
+          path: 'challenge-detail/:id',
           element: <ChallengeDetailPage />,
+        },
+        {
+          path: 'mypage',
+          element: <MyPage />,
         },
       ],
     },
