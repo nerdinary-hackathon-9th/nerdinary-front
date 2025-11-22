@@ -1,5 +1,5 @@
-import SearchFilterBar from './SearchFilterBar';
-import WasteCard from './WasteCard';
+import SearchFilterBar from '@/components/ui/SearchFilterBar';
+import WasteCard from '@/components/ui/WasteCard';
 
 const WasteList = () => {
   return (
