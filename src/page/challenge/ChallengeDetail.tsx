@@ -1,0 +1,61 @@
+import SlideButton from '@/components/ui/SlideButton';
+
+import CalendarIcon from '@/assets/calendar.svg?react';
+import PeopleIcon from '@/assets/people.svg?react';
+
+const ChallengeDetailPage = () => {
+  return (
+    <div className="relative h-[calc(100dvh-48px)] flex flex-col">
+      {/* Scrollable Content */}
+      <main className="flex-1 overflow-y-auto pb-32">
+        {/* Image */}
+        <img src="/public/example.png" className="w-full h-60 object-cover" alt="challenge" />
+
+        {/* Title */}
+        <div className="px-5 py-4 text-center">
+          <div className="flex flex-col gap-1">
+            <h1 className="text-lg font-bold text-neutral-900">갑자기 바다보고 오기</h1>
+            <div className="flex gap-2 justify-center items-center text-xs text-neutral-300 mt-1">
+              <div className="flex items-center gap-1">
+                <CalendarIcon className="w-4 h-4" />
+                <span>2025.11.22 ~ 2025.11.23</span>
+              </div>
+
+              <div className="flex items-center gap-1">
+                <PeopleIcon />
+                <span>100명 참여중</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Description */}
+        <div className="px-10 mt-2 text-xs text-neutral-400 text-center leading-relaxed">
+          마음이 턱 막히는 날이 있지 않으셨나요? 그런 날은 갑자기 넓은 바다를 보고 오면 해결될 수도
+          있어요! 시간 되는 날, 갑자기 표를 끊고 바다 다녀오는 거 어떠세요?
+        </div>
+
+        {/* Gallery */}
+        <section className="px-5 mt-6">
+          <h2 className="font-medium mb-3 text-sm text-neutral-500">챌린지 인증내용</h2>
+
+          <div className="grid grid-cols-3 gap-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div
+                className="bg-neutral-100 border-neutral-100 border rounded-lg h-28"
+                key={i}
+              ></div>
+            ))}
+          </div>
+        </section>
+      </main>
+
+      {/* Slide CTA */}
+      <div className="absolute bottom-5 left-0 w-full px-5">
+        <SlideButton text="참여하기" onComplete={() => alert('참여 완료')} />
+      </div>
+    </div>
+  );
+};
+
+export default ChallengeDetailPage;

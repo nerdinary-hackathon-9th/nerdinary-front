@@ -6,12 +6,11 @@ function App() {
 
   const headerVariant = (() => {
     if (location.pathname === '/') return 'logo'; // 홈
-    // if (location.pathname.startsWith('/test')) return 'back-text';
+    if (location.pathname.startsWith('/challenge')) return 'back'; // 낭비;
     return 'none';
   })();
   const headerTitle = (() => {
     if (location.pathname === '/') return 'none'; // 홈
-    if (location.pathname.startsWith('/test')) return '낭비 목록';
     return 'none';
   })();
 

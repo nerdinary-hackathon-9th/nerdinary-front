@@ -7,6 +7,7 @@ import Login from '@/page/auth/Login';
 import SignUp from '@/page/auth/SignUp';
 import MakeChallengePage from '@/page/makeChallenge/MakeChallengePage';
 import JoinChallengePage from '@/page/joinChallenge/JoinChallengePage';
+import ChallengeDetailPage from '@/page/challenge/ChallengeDetail';
 
 import App from '../App';
 
@@ -36,6 +37,10 @@ export const AppRouter = () => {
         {
           path: 'join-challenge',
           element: <JoinChallengePage />,
+        },
+        {
+          path: 'challenge',
+          element: <ChallengeDetailPage />,
         },
       ],
     },
