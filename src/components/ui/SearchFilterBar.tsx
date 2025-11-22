@@ -1,24 +1,43 @@
+import { useState } from 'react';
+
+import SearchIcon from '@/assets/search.svg?react';
+import DownArrowIcon from '@/assets/downArrow.svg?react';
+
 const SearchFilterBar = () => {
+  const [searchValue, setSearchValue] = useState('');
+  const [filterValue, setFilterValue] = useState('최신순');
+
   return (
-    <div className="w-5/6 flex gap-3 py-3">
-      <input
-        type="text"
-        placeholder="검색창"
-        className="flex-1 bg-muted py-2 px-3 rounded-md border"
-      />
+    <div className="w-5/6 flex items-center gap-1 py-3 ">
+      {/* 검색 창 */}
+      <div className="flex-1 relative">
+        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 ">
+          <SearchIcon className="w-5 h-5" />
+        </div>
+        <input
+          type="text"
+          placeholder="검색어를 입력해 주세요"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          className="w-full h-10 py-2 pl-10 pr-3 bg-sihang-primary-10 text-sm placeholder:text-sihang-neutral-400 rounded-full shadow-md focus:outline-none focus:border-sihang"
+        />
+        {/* 메뉴 아이콘 */}
+        <button className="absolute top-1.5 right-2 w-6 rounded-full bg-black text-white">
+          별
+        </button>
+      </div>
+
+      {/* 필터 드롭다운 */}
       <div className="relative">
-        <select className="bg-muted py-3 px-3 pr-8 rounded-md text-sm cursor-pointer outline-none appearance-none w-20">
-          <option value="" disabled>
-            필터
-          </option>
-          <option value="latest">최신순</option>
+        <select
+          value={filterValue}
+          onChange={(e) => setFilterValue(e.target.value)}
+          className="py-2 px-3 pr-8 text-xs cursor-pointer appearance-none text-neutral-400"
+        >
+          <option value="new">최신순</option>
           <option value="popular">인기순</option>
         </select>
-
-        {/* Custom 화살표 */}
-        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs pointer-events-none">
-          ▼
-        </span>
+        <DownArrowIcon className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4" />
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ const mockData = [
     startDate: '2025.11.22',
     endDate: '2025.11.23',
     participant: 112,
+    challengeId: 1,
   },
   {
     title: '비오는 날 비 맞으면서 걷기',
@@ -15,6 +16,7 @@ const mockData = [
     startDate: '2025.11.23',
     endDate: '2025.11.24',
     participant: 55,
+    challengeId: 2,
   },
   {
     title: '본가에 강아지 보러 다녀오기',
@@ -22,6 +24,7 @@ const mockData = [
     startDate: '2025.11.24',
     endDate: '2025.11.25',
     participant: 23,
+    challengeId: 3,
   },
 
   {
@@ -30,6 +33,7 @@ const mockData = [
     startDate: '2025.11.25',
     endDate: '2025.11.26',
     participant: 241,
+    challengeId: 4,
   },
   {
     title: '잠시 노트북 덮고 쉬자',
@@ -37,12 +41,13 @@ const mockData = [
     startDate: '2025.11.26',
     endDate: '2025.11.27',
     participant: 79,
+    challengeId: 5,
   },
 ];
 
 const ChallengeList = () => {
   return (
-    <div className="w-full flex flex-col gap-3 items-center overflow-y-scroll">
+    <div className="pb-5 w-full flex flex-col gap-3 items-center overflow-y-scroll">
       <SearchFilterBar />
       {mockData.map((item, idx) => (
         <ChallengeCard key={idx} {...item} />
