@@ -31,7 +31,7 @@ export const AppRouter = () => {
           element: <MakeChallengePage />,
         },
         {
-          path: 'join-challenge',
+          path: 'challenge-detail/:id/join',
           element: <JoinChallengePage />,
         },
         {
