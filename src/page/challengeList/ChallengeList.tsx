@@ -1,7 +1,7 @@
 import SearchFilterBar from '@/components/ui/SearchFilterBar';
 import WasteCard from '@/components/ui/WasteCard';
 
-const WasteList = () => {
+const ChallengeList = () => {
   return (
     <div className="w-full flex flex-col gap-3 items-center overflow-y-scroll">
       <SearchFilterBar />
@@ -13,4 +13,4 @@ const WasteList = () => {
     </div>
   );
 };
-export default WasteList;
+export default ChallengeList;

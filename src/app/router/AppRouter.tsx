@@ -9,7 +9,7 @@ import JoinChallengePage from '@/page/joinChallenge/JoinChallengePage';
 import ChallengeDetailPage from '@/page/challenge/ChallengeDetail';
 
 import App from '../App';
-import WasteList from '@/page/challengeList/WasteList';
+import ChallengeList from '@/page/challengeList/ChallengeList';
 
 export const AppRouter = () => {
   const router = createBrowserRouter([
@@ -41,7 +41,7 @@ export const AppRouter = () => {
         },
         {
           path: 'challenge-list',
-          element: <WasteList />,
+          element: <ChallengeList />,
         },
       ],
     },
