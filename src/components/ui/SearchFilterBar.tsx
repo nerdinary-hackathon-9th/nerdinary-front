@@ -7,7 +7,7 @@ const SearchFilterBar = () => {
         className="flex-1 bg-muted py-2 px-3 rounded-md border"
       />
       <div className="relative">
-        <select className="bg-muted py-3 px-3 pr-8 rounded-md text-sm cursor-pointer outline-none appearance-none w-20 border">
+        <select className="bg-muted py-3 px-3 pr-8 rounded-md text-sm cursor-pointer outline-none appearance-none w-20">
           <option value="" disabled>
             필터
           </option>
