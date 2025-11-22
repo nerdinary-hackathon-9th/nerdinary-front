@@ -50,40 +50,56 @@ const mockData = [
 
 const ChallengeListPage = () => {
   const [searchValue, setSearchValue] = useState('');
-  const [filterValue, setFilterValue] = useState('new');
+  const [filterValue, setFilterValue] = useState<'new' | 'old' | 'most' | 'least'>('new');
 
   const filteredData = useMemo(() => {
-    let result = [...mockData];
+    let filtered = [...mockData];
 
-    if (searchValue) {
-      result = result.filter((item) =>
+    // 검색어 필터링
+    if (searchValue.trim()) {
+      filtered = filtered.filter((item) =>
         item.title.toLowerCase().includes(searchValue.toLowerCase()),
       );
     }
 
+    // 정렬
     if (filterValue === 'new') {
-      result.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
-    } else if (filterValue === 'popular') {
-      result.sort((a, b) => b.participant - a.participant);
+      filtered.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+    } else if (filterValue === 'old') {
+      filtered.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+    } else if (filterValue === 'most') {
+      filtered.sort((a, b) => b.participant - a.participant);
+    } else if (filterValue === 'least') {
+      filtered.sort((a, b) => a.participant - b.participant);
     }
 
-    return result;
+    return filtered;
   }, [searchValue, filterValue]);
+
+  const handleFilterChange = (value: string) => {
+    if (value === 'new' || value === 'old' || value === 'most' || value === 'least') {
+      setFilterValue(value);
+    }
+  };
 
   return (
     <div>
-      <Header variant="text" title="낭낭 리스트" />
+      <Header variant="back-text" title="낭낭 리스트" />
 
       <div className="pb-20 px-5 w-full flex flex-col gap-3 items-center overflow-y-scroll">
         <SearchFilterBar
           searchValue={searchValue}
           onSearchChange={setSearchValue}
           filterValue={filterValue}
-          onFilterChange={setFilterValue}
+          onFilterChange={handleFilterChange}
         />
 
+        {filteredData.length === 0 && (
+          <div className="py-10 text-neutral-400 text-sm">검색 결과가 없습니다.</div>
+        )}
+
         {filteredData.map((item, idx) => (
-          <ChallengeCard key={idx} {...item} />
+          <ChallengeCard key={item.challengeId || idx} {...item} />
         ))}
       </div>
       <GlobalNavigationBar />
