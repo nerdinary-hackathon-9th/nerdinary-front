@@ -1,5 +1,5 @@
 interface AuthInputProps {
-  label: string;
+  label?: string;
   placeholder: string;
   value: string;
   type?: string;
@@ -39,7 +39,7 @@ export const AuthInput = ({
           placeholder={placeholder}
           onChange={onChange}
           maxLength={maxLength}
-          className={`${renderButton ? 'flex-1' : 'w-full'} border ${getBorderColor()} rounded-lg px-4 py-3.5 text-base placeholder:text-gray-400 ${className}`}
+          className={`${renderButton ? 'flex-1' : 'w-full'} border ${getBorderColor()} rounded-lg px-4 py-3.5 text-sm font-normal placeholder:text-sihang-neutral-400 ${className}`}
         />
         {renderButton && renderButton()}
       </div>

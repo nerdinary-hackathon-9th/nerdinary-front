@@ -1,6 +1,7 @@
 import { Header } from '@/app/layout/header/ui/Header';
 import { AuthInput } from '../components/AuthInput';
 import { useSignUpForm } from '../hooks/useSignUpForm';
+import clsx from 'clsx';
 
 const SignUpPage = () => {
   const {
@@ -34,7 +35,7 @@ const SignUpPage = () => {
             renderButton={() => (
               <button
                 onClick={checkNickName}
-                className="px-5 py-3.5 bg-white text-sm text-sihang-neutral-900 font-normal border border-sihang-neutral-100 rounded-[12px] font-medium whitespace-nowrap hover:bg-gray-50 transition-colors"
+                className="px-5 py-3.5 bg-white text-sm text-sihang-neutral-900 font-normal border border-sihang-neutral-100 rounded-[12px] whitespace-nowrap hover:bg-gray-50 transition-colors"
               >
                 중복 확인
               </button>
@@ -50,7 +51,9 @@ const SignUpPage = () => {
               value={form.password}
               onChange={handleChange('password')}
               error={
-                touched.password && debouncedValues.password.length > 0 && !passwordValidation.isValid
+                touched.password &&
+                debouncedValues.password.length > 0 &&
+                !passwordValidation.isValid
                   ? ''
                   : null
               }
@@ -97,11 +100,12 @@ const SignUpPage = () => {
           <button
             disabled={!isValid}
             onClick={handleSubmit}
-            className={`w-full py-4 rounded-lg text-lg font-medium transition-all ${
+            className={clsx(
+              'w-full py-4 rounded-lg text-lg font-medium transition-all',
               isValid
                 ? 'bg-sihang-primary-400 text-white'
-                : 'bg-sihang-neutral-100 text-sihang-neutral-300 cursor-not-allowed'
-            }`}
+                : 'bg-sihang-neutral-100 text-sihang-neutral-300 cursor-not-allowed',
+            )}
           >
             가입하기
           </button>
