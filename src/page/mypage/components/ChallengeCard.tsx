@@ -1,7 +1,7 @@
 import CalendarIcon from '@/assets/grayCalendar.svg?react';
 import RightArrow from '@/assets/Arrows-chevron/Icon.svg?react';
 
-interface JoinChallengeCardProps {
+interface ChallengeCardProps {
   title: string;
   startDate: string;
   endDate: string;
@@ -11,7 +11,7 @@ interface JoinChallengeCardProps {
   onClick?: () => void;
 }
 
-export const JoinChallengeCard = ({
+export const ChallengeCard = ({
   title,
   startDate,
   endDate,
@@ -19,7 +19,7 @@ export const JoinChallengeCard = ({
   content,
   popular = true,
   onClick,
-}: JoinChallengeCardProps) => {
+}: ChallengeCardProps) => {
   return (
     <div
       onClick={onClick}
