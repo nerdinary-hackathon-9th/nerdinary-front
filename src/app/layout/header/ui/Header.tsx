@@ -12,7 +12,7 @@ interface InnerHeaderProps {
   className?: string;
 }
 
-type HeaderVariant = 'logo' | 'back' | 'back-text' | 'text-close';
+type HeaderVariant = 'logo' | 'back' | 'back-text' | 'text-close' | 'text';
 
 interface HeaderProps {
   variant: HeaderVariant;
@@ -61,5 +61,8 @@ export const Header = ({ variant, title }: HeaderProps) => {
           right={<CloseButton onClick={() => navigate(-1)} />}
         />
       );
+
+    case 'text':
+      return <HeaderInner left={<span className="heading-20 text-black">{title}</span>} />;
   }
 };
