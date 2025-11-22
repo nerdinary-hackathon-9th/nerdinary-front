@@ -1,11 +1,19 @@
-import { useState } from 'react';
-
 import SearchIcon from '@/assets/search.svg?react';
 import DownArrowIcon from '@/assets/downArrow.svg?react';
 
-const SearchFilterBar = () => {
-  const [searchValue, setSearchValue] = useState('');
-  const [filterValue, setFilterValue] = useState('최신순');
+interface SearchFilterBarProps {
+  searchValue: string;
+  onSearchChange: (value: string) => void;
+  filterValue: string;
+  onFilterChange: (value: string) => void;
+}
+
+const SearchFilterBar = ({
+  searchValue,
+  onSearchChange,
+  filterValue,
+  onFilterChange,
+}: SearchFilterBarProps) => {
 
   return (
     <div className="w-5/6 flex items-center gap-1 py-3 ">
@@ -18,7 +26,7 @@ const SearchFilterBar = () => {
           type="text"
           placeholder="검색어를 입력해 주세요"
           value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
+          onChange={(e) => onSearchChange(e.target.value)}
           className="w-full h-10 py-2 pl-10 pr-3 bg-sihang-primary-10 text-sm placeholder:text-sihang-neutral-400 rounded-full shadow-md focus:outline-none focus:border-sihang"
         />
         {/* 메뉴 아이콘 */}
@@ -31,7 +39,7 @@ const SearchFilterBar = () => {
       <div className="relative">
         <select
           value={filterValue}
-          onChange={(e) => setFilterValue(e.target.value)}
+          onChange={(e) => onFilterChange(e.target.value)}
           className="py-2 px-3 pr-8 text-xs cursor-pointer appearance-none text-neutral-400"
         >
           <option value="new">최신순</option>
