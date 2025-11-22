@@ -1,14 +1,9 @@
 import { Header } from '@/app/layout/header/ui/Header';
-import { useImageCompression } from '@/hooks/useImageCompression';
-import { useRef, useState } from 'react';
+import { compressImage } from '@/utils/compressImage';
+import { useRef, useState, type ChangeEvent } from 'react';
 
 const HomePage = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const { compress, isCompressing } = useImageCompression({
-    maxSizeMB: 0.7,
-    maxWidthOrHeight: 1200,
-  });
 
   const [compressedFile, setCompressedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -17,22 +12,14 @@ const HomePage = () => {
     fileInputRef.current?.click();
   };
 
-  const onSelectImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onSelectImage = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // 1) 이미지 압축
-    const compressed = await compress(file);
-    if (!compressed) {
-      console.error('이미지 압축 실패');
-      return;
-    }
+    const compressed = await compressImage(file);
 
     setCompressedFile(compressed);
-
-    // 2) 미리보기 URL 생성 (선택)
-    const url = URL.createObjectURL(compressed);
-    setPreviewUrl(url);
+    setPreviewUrl(URL.createObjectURL(compressed));
   };
 
   return (
@@ -53,12 +40,10 @@ const HomePage = () => {
           onChange={onSelectImage}
         />
 
-        {isCompressing && <p>이미지 압축중...</p>}
-
         {previewUrl && (
           <div className="mt-4">
             <p>압축된 이미지 미리보기</p>
-            <img src={previewUrl} alt="preview" className="w-40 rounded" />
+            <img src={previewUrl} alt="preview" className="w-full rounded" />
             <p className="mt-2 text-sm text-gray-600">
               size: {(compressedFile!.size / 1024).toFixed(1)} KB
             </p>
