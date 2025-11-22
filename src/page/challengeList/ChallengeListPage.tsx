@@ -48,7 +48,7 @@ const mockData = [
   },
 ];
 
-const ChallengeList = () => {
+const ChallengeListPage = () => {
   const [searchValue, setSearchValue] = useState('');
   const [filterValue, setFilterValue] = useState('new');
 
@@ -89,4 +89,4 @@ const ChallengeList = () => {
     </>
   );
 };
-export default ChallengeList;
+export default ChallengeListPage;
