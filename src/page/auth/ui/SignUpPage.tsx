@@ -1,7 +1,7 @@
 import { Header } from '@/app/layout/header/ui/Header';
 import { AuthInput } from '../components/AuthInput';
 import { useSignUpForm } from '../hooks/useSignUpForm';
-import { passwordRegex } from '../utils/regex';
+import { validatePassword, validatePasswordMatch } from '../utils/validation';
 
 const SignUpPage = () => {
   const {
@@ -51,7 +51,7 @@ const SignUpPage = () => {
               error={
                 touched.password &&
                 debouncedValues.password.length > 0 &&
-                !passwordRegex.test(debouncedValues.password)
+                !validatePassword(debouncedValues.password).isValid
                   ? ''
                   : null
               }
@@ -66,7 +66,8 @@ const SignUpPage = () => {
               error={
                 touched.confirmPassword &&
                 debouncedValues.confirmPassword.length > 0 &&
-                debouncedValues.password !== debouncedValues.confirmPassword
+                !validatePasswordMatch(debouncedValues.password, debouncedValues.confirmPassword)
+                  .isValid
                   ? ''
                   : null
               }
@@ -74,20 +75,28 @@ const SignUpPage = () => {
             {/* 비밀번호 형식 오류 */}
             {touched.password &&
               debouncedValues.password.length > 0 &&
-              !passwordRegex.test(debouncedValues.password) && (
+              !validatePassword(debouncedValues.password).isValid && (
                 <div className="h-8 mt-3 px-4 py-2 bg-red-50 rounded-md">
                   <p className="text-xs text-red-600 font-normal">
-                    비밀번호는 6~15자리로 영문 대소문자/숫자를 혼합해주세요.
+                    {validatePassword(debouncedValues.password).message}
                   </p>
                 </div>
               )}
             {/* 비밀번호 불일치 */}
             {touched.confirmPassword &&
               debouncedValues.confirmPassword.length > 0 &&
-              passwordRegex.test(debouncedValues.password) &&
-              debouncedValues.password !== debouncedValues.confirmPassword && (
+              validatePassword(debouncedValues.password).isValid &&
+              !validatePasswordMatch(debouncedValues.password, debouncedValues.confirmPassword)
+                .isValid && (
                 <div className="h-8 mt-3 px-4 py-2 bg-red-50 rounded-md">
-                  <p className="text-xs text-red-600 font-normal">비밀번호가 일치하지 않습니다.</p>
+                  <p className="text-xs text-red-600 font-normal">
+                    {
+                      validatePasswordMatch(
+                        debouncedValues.password,
+                        debouncedValues.confirmPassword,
+                      ).message
+                    }
+                  </p>
                 </div>
               )}
           </div>

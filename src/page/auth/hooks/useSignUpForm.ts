@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { userPost } from '@/api/user/user-post';
 import { userGet } from '@/api/user/user-get';
-import { nicknameRegex, passwordRegex } from '../utils/regex';
+import { validateNickname, validateSignUpForm } from '../utils/validation';
 
 export const useSignUpForm = () => {
   const navigate = useNavigate();
@@ -58,50 +58,33 @@ export const useSignUpForm = () => {
   };
 
   // 최종 회원가입 버튼 활성화 여부
-  const isValid =
-    nicknameRegex.test(form.nickname) &&
-    passwordRegex.test(form.password) &&
-    form.password === form.confirmPassword &&
-    isNicknameChecked;
+  const isValid = validateSignUpForm(
+    form.nickname,
+    form.password,
+    form.confirmPassword,
+    isNicknameChecked
+  );
 
   /* =====================
         닉네임 중복 체크
      ===================== */
   const checkNickName = async () => {
-    // 닉네임이 비어있는 경우
-    if (!form.nickname.trim()) {
+    // 닉네임 유효성 검증
+    const validation = validateNickname(form.nickname);
+
+    if (!validation.isValid) {
       setNicknameCheckMessage({
         type: 'error',
-        text: '닉네임을 입력해주세요.',
+        text: validation.message,
       });
       setIsNicknameChecked(false);
       return;
     }
 
-    // 닉네임 길이 체크 (8자 이내)
-    if (form.nickname.length > 8) {
-      setNicknameCheckMessage({
-        type: 'error',
-        text: '닉네임은 8자 이내로 입력해주세요.',
-      });
-      setIsNicknameChecked(false);
-      return;
-    }
-
-    // 닉네임 형식 체크
-    if (!nicknameRegex.test(form.nickname)) {
-      setNicknameCheckMessage({
-        type: 'error',
-        text: '닉네임 형식이 올바르지 않습니다.',
-      });
-      setIsNicknameChecked(false);
-      return;
-    }
-
+    // API 중복 확인
     try {
       const res = await userGet.checkNickName(form.nickname);
 
-      // API 구조에 맞춰 수정: available
       if (res.data.isAvailable === true) {
         setNicknameCheckMessage({
           type: 'success',
