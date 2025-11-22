@@ -1,6 +1,7 @@
 import { Header } from '@/app/layout/header/ui/Header';
 import { compressImage } from '@/utils/compressImage';
 import { useRef, useState, type ChangeEvent } from 'react';
+import { GlobalNavigationBar } from '@/app/layout/navigation/GlobalNavigationBar';
 
 const HomePage = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -50,6 +51,7 @@ const HomePage = () => {
           </div>
         )}
       </div>
+      <GlobalNavigationBar />
     </>
   );
 };

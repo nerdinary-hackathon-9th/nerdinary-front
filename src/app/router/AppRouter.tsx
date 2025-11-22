@@ -7,9 +7,9 @@ import MakeChallengePage from '@/page/makeChallenge/MakeChallengePage';
 import JoinChallengePage from '@/page/joinChallenge/JoinChallengePage';
 import ChallengeDetailPage from '@/page/challengeDetail/ChallengeDetailPage';
 import MyPage from '@/page/mypage/MyPage';
+import ChallengeListPage from '@/page/challengeList/ChallengeListPage';
 
 import App from '../App';
-import ChallengeList from '@/page/challengeList/ChallengeList';
 
 export const AppRouter = () => {
   const router = createBrowserRouter([
@@ -44,8 +44,8 @@ export const AppRouter = () => {
           element: <MyPage />,
         },
         {
-          path: 'list',
-          element: <ChallengeList />,
+          path: 'challenge-list',
+          element: <ChallengeListPage />,
         },
       ],
     },
