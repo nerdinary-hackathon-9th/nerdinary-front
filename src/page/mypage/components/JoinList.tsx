@@ -1,9 +1,9 @@
-import { JoinChallengeCard } from './JoinChallengeCard';
+import { ChallengeCard } from './ChallengeCard';
 
 export const JoinList = () => {
   return (
     <div>
-      <JoinChallengeCard
+      <ChallengeCard
         title="제목"
         startDate="2025-10-01"
         endDate="2025-10-15"
