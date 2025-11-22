@@ -1,10 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import SearchFilterBar from '@/components/ui/SearchFilterBar';
 import ChallengeCard from '@/components/ui/ChallengeCard';
 import { GlobalNavigationBar } from '@/app/layout/navigation/GlobalNavigationBar';
 import { Header } from '@/app/layout/header/ui/Header';
-import { challengeAPI } from '@/api/challenge';
-import type { Challenge } from '@/api/challenge';
 
 const mockData = [
   {
@@ -53,37 +51,26 @@ const mockData = [
 const ChallengeList = () => {
   const [searchValue, setSearchValue] = useState('');
   const [filterValue, setFilterValue] = useState<'new' | 'popular'>('new');
-  const [challenges, setChallenges] = useState<Challenge[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  // API 호출
-  useEffect(() => {
-    const fetchChallenges = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        const response = await challengeAPI.getList({
-          search: searchValue || undefined,
-          sort: filterValue,
-        });
-        setChallenges(response.challenges || []);
-      } catch (err) {
-        console.error('챌린지 목록 조회 실패:', err);
-        setError('챌린지 목록을 불러오는데 실패했습니다.');
-        // 에러 발생 시 mockData 사용
-        setChallenges(mockData);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchChallenges();
-  }, [searchValue, filterValue]);
 
   const filteredData = useMemo(() => {
-    return challenges;
-  }, [challenges]);
+    let filtered = [...mockData];
+
+    // 검색어 필터링
+    if (searchValue.trim()) {
+      filtered = filtered.filter((item) =>
+        item.title.toLowerCase().includes(searchValue.toLowerCase()),
+      );
+    }
+
+    // 정렬
+    if (filterValue === 'new') {
+      filtered.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+    } else if (filterValue === 'popular') {
+      filtered.sort((a, b) => b.participant - a.participant);
+    }
+
+    return filtered;
+  }, [searchValue, filterValue]);
 
   const handleFilterChange = (value: string) => {
     if (value === 'new' || value === 'popular') {
@@ -103,21 +90,11 @@ const ChallengeList = () => {
           onFilterChange={handleFilterChange}
         />
 
-        {isLoading && (
-          <div className="py-10 text-neutral-400 text-sm">로딩 중...</div>
+        {filteredData.length === 0 && (
+          <div className="py-10 text-neutral-400 text-sm">검색 결과가 없습니다.</div>
         )}
 
-        {error && (
-          <div className="py-10 text-red-500 text-sm">{error}</div>
-        )}
-
-        {!isLoading && !error && filteredData.length === 0 && (
-          <div className="py-10 text-neutral-400 text-sm">
-            검색 결과가 없습니다.
-          </div>
-        )}
-
-        {!isLoading && filteredData.map((item, idx) => (
+        {filteredData.map((item, idx) => (
           <ChallengeCard key={item.challengeId || idx} {...item} />
         ))}
       </div>
