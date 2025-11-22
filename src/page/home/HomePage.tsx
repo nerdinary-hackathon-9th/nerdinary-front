@@ -4,8 +4,9 @@ const HomePage = () => {
   return (
     <>
       <Header variant="text-close" title="dfdfdf" />
-      <div className="w-full">homepage
-        <p className=''>ddf</p>
+      <div className="w-full">
+        homepage
+        <p className="">ddf</p>
       </div>
     </>
   );
