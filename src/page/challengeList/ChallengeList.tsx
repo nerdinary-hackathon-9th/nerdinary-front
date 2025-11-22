@@ -50,7 +50,7 @@ const mockData = [
 
 const ChallengeList = () => {
   const [searchValue, setSearchValue] = useState('');
-  const [filterValue, setFilterValue] = useState<'new' | 'popular'>('new');
+  const [filterValue, setFilterValue] = useState<'new' | 'old' | 'most' | 'least'>('new');
 
   const filteredData = useMemo(() => {
     let filtered = [...mockData];
@@ -65,15 +65,19 @@ const ChallengeList = () => {
     // 정렬
     if (filterValue === 'new') {
       filtered.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
-    } else if (filterValue === 'popular') {
+    } else if (filterValue === 'old') {
+      filtered.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+    } else if (filterValue === 'most') {
       filtered.sort((a, b) => b.participant - a.participant);
+    } else if (filterValue === 'least') {
+      filtered.sort((a, b) => a.participant - b.participant);
     }
 
     return filtered;
   }, [searchValue, filterValue]);
 
   const handleFilterChange = (value: string) => {
-    if (value === 'new' || value === 'popular') {
+    if (value === 'new' || value === 'old' || value === 'most' || value === 'least') {
       setFilterValue(value);
     }
   };

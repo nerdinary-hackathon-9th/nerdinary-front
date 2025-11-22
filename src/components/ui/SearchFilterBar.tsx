@@ -1,6 +1,6 @@
 import SearchIcon from '@/assets/search.svg?react';
-import DownArrowIcon from '@/assets/downArrow.svg?react';
 import LogoIcon from '@/assets/searchBarLogo.svg?react';
+import SelectDropdown, { type SelectOption } from './SelectDropdown';
 
 interface SearchFilterBarProps {
   searchValue: string;
@@ -8,6 +8,13 @@ interface SearchFilterBarProps {
   filterValue: string;
   onFilterChange: (value: string) => void;
 }
+
+const filterOptions: SelectOption[] = [
+  { value: 'new', label: '최신순' },
+  { value: 'old', label: '오래된 순' },
+  { value: 'most', label: '참여자 많은 순' },
+  { value: 'least', label: '참여자 적은 순' },
+];
 
 const SearchFilterBar = ({
   searchValue,
@@ -34,17 +41,7 @@ const SearchFilterBar = ({
       </div>
 
       {/* 필터 드롭다운 */}
-      <div className="relative">
-        <select
-          value={filterValue}
-          onChange={(e) => onFilterChange(e.target.value)}
-          className="py-2 px-3 pr-8 text-xs cursor-pointer appearance-none text-neutral-400"
-        >
-          <option value="new">최신순</option>
-          <option value="popular">인기순</option>
-        </select>
-        <DownArrowIcon className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4" />
-      </div>
+      <SelectDropdown value={filterValue} onChange={onFilterChange} options={filterOptions} />
     </div>
   );
 };
