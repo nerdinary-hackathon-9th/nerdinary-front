@@ -26,10 +26,10 @@ export const ChallengeCardAtMyPage = ({
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const start = new Date(startDate); // ISO 문자열 파싱
+  const start = new Date(startDate);
   start.setHours(0, 0, 0, 0);
 
-  const isNew = start.getTime() === today.getTime();
+  const isNew = start.getTime() >= today.getTime();
 
   return (
     <div

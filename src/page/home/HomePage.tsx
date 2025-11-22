@@ -1,59 +1,76 @@
+import { useNavigate } from 'react-router-dom';
 import { Header } from '@/app/layout/header/ui/Header';
-import { compressImage } from '@/utils/compressImage';
-import { useRef, useState, type ChangeEvent } from 'react';
 import { GlobalNavigationBar } from '@/app/layout/navigation/GlobalNavigationBar';
 
+import { HotChallenges } from './components/HotChallenges';
+
 const HomePage = () => {
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const [compressedFile, setCompressedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-  const onClickSelectFile = () => {
-    fileInputRef.current?.click();
-  };
-
-  const onSelectImage = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const compressed = await compressImage(file);
-
-    setCompressedFile(compressed);
-    setPreviewUrl(URL.createObjectURL(compressed));
-  };
-
+  const navigate = useNavigate();
   return (
-    <>
-      <Header variant="text-close" title="dfdfdf" />
-
-      <div className="p-4">
-        <button onClick={onClickSelectFile} className="px-4 py-2 bg-blue-500 text-white rounded">
-          이미지 선택하기
-        </button>
-
-        {/* 숨겨진 파일 input */}
-        <input
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          className="hidden"
-          onChange={onSelectImage}
+    <div className="min-h-screen">
+      <Header variant="logo" />
+      <div className="border border-b border-[#F3F3F5] " />
+      <div className="flex flex-col items-center justify-center px-5">
+        {/* <HomePageSvg className="w-full" /> */}
+        <img src="/public/homepage.png" className="relative mt-5" />
+        <button
+          className="transparant w-48 h-14 absolute top-47 left-8"
+          onClick={() => navigate('challenge-list')}
         />
 
-        {previewUrl && (
-          <div className="mt-4">
-            <p>압축된 이미지 미리보기</p>
-            <img src={previewUrl} alt="preview" className="w-full rounded" />
-            <p className="mt-2 text-sm text-gray-600">
-              size: {(compressedFile!.size / 1024).toFixed(1)} KB
-            </p>
-          </div>
-        )}
+        <div className="w-screen overflow-x-auto">
+          <HotChallenges
+            items={mockHotChallengeData}
+            onClickItem={(id) => console.log('clicked', id)}
+          />
+        </div>
       </div>
       <GlobalNavigationBar />
-    </>
+    </div>
   );
 };
 
 export default HomePage;
+
+export const mockHotChallengeData = [
+  {
+    id: 1,
+    title: '갑자기 바다 보러가기!!',
+    imgSrc: '/public/listexam1.png',
+    startDate: '2025.11.22',
+    endDate: '2025.11.23',
+    participant: 128,
+  },
+  {
+    id: 2,
+    title: '한겨울에 아이스크림 먹기',
+    imgSrc: '/public/listexam2.png',
+    startDate: '2025.11.22',
+    endDate: '2025.11.23',
+    participant: 145,
+  },
+  {
+    id: 3,
+    title: '본가에 강아지 보러 다녀오기',
+    imgSrc: '/public/listexam3.png',
+    startDate: '2025.11.23',
+    endDate: '2025.11.24',
+    participant: 209,
+  },
+  {
+    id: 4,
+    title: '잠시 노트북 덮고 걷기',
+    imgSrc: '/public/listexam4.png',
+    startDate: '2025.11.24',
+    endDate: '2025.11.25',
+    participant: 89,
+  },
+  {
+    id: 5,
+    title: '수족관에서 힐링하기',
+    imgSrc: '/public/listexam5.png',
+    startDate: '2025.11.24',
+    endDate: '2025.11.25',
+    participant: 173,
+  },
+];
