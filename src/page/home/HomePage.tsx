@@ -11,21 +11,26 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   const [hotItems, setHotItems] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [todayItems, setTodayItems] = useState<any[]>([]);
+
+  const [, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchHot = async () => {
+    const fetchAll = async () => {
       try {
-        const res = await challengeGet.getHotChallenge();
-        setHotItems(res.data); // ← API 응답 배열
+        const hotRes = await challengeGet.getHotChallenge();
+        setHotItems(hotRes.data);
+
+        const todayRes = await challengeGet.getTodayChallenge();
+        setTodayItems(todayRes.data);
       } catch (err) {
-        console.error('핫 챌린지 불러오기 실패:', err);
+        console.error('홈 데이터 불러오기 실패:', err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchHot();
+    fetchAll();
   }, []);
 
   return (
@@ -46,7 +51,7 @@ const HomePage = () => {
             onClickItem={(id) => navigate(`/challenge-detail/${id}`)}
           />
 
-          <ProgressChallenges items={mockHotChallengeData} />
+          <ProgressChallenges items={todayItems} />
         </div>
       </div>
 
@@ -71,46 +76,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-export const mockHotChallengeData = [
-  {
-    id: 1,
-    title: '갑자기 바다 보러가기!!',
-    imgSrc: '/public/listexam1.png',
-    startDate: '2025.11.22',
-    endDate: '2025.11.23',
-    participant: 128,
-  },
-  {
-    id: 2,
-    title: '한겨울에 아이스크림 먹기',
-    imgSrc: '/public/listexam2.png',
-    startDate: '2025.11.22',
-    endDate: '2025.11.23',
-    participant: 145,
-  },
-  {
-    id: 3,
-    title: '본가에 강아지 보러 다녀오기',
-    imgSrc: '/public/listexam3.png',
-    startDate: '2025.11.23',
-    endDate: '2025.11.24',
-    participant: 209,
-  },
-  {
-    id: 4,
-    title: '잠시 노트북 덮고 걷기',
-    imgSrc: '/public/listexam4.png',
-    startDate: '2025.11.24',
-    endDate: '2025.11.25',
-    participant: 89,
-  },
-  {
-    id: 5,
-    title: '수족관에서 힐링하기',
-    imgSrc: '/public/listexam5.png',
-    startDate: '2025.11.24',
-    endDate: '2025.11.25',
-    participant: 173,
-  },
-];

@@ -42,6 +42,7 @@ export interface Challenge {
 export type HotChallengeResponseDTO = ApiResponse<HotChallenge[]>;
 export type ChallengeReseponseDTO = ApiResponse<ChallengeReseponse>;
 export type AllChallengeResponseDTO = ApiResponse<Challenge[]>;
+export type TodayChallengeResponseDTO = ApiResponse<Challenge[]>;
 /* ===========================
      Handlers
 =========================== */
@@ -59,6 +60,11 @@ export const challengeGet = {
 
   getAllChallenge: async (): Promise<AllChallengeResponseDTO> => {
     const response = await api.get('api/challenge/list').json<AllChallengeResponseDTO>();
+    return response;
+  },
+
+  getTodayChallenge: async (): Promise<TodayChallengeResponseDTO> => {
+    const response = await api.get('api/challenge/today').json<TodayChallengeResponseDTO>();
     return response;
   },
 };
