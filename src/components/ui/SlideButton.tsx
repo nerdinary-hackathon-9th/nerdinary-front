@@ -87,20 +87,41 @@ const SlideButton = ({ text = '청춘을 낭비하러 출발', onComplete }: Sli
       }`}
     >
       {/* Text */}
-      <span
-        className={`w-full text-base text-center font-semibold transition-all duration-300 ease-out ${
-          completed
-            ? 'text-sihang-primary-400'
-            : progressStage === 3
+      <span className="w-full text-base text-center font-semibold relative">
+        <span
+          className={`absolute inset-0 transition-opacity duration-300 ease-out ${
+            progressStage >= 2 ? 'opacity-0' : 'opacity-100'
+          } ${
+            completed
               ? 'text-sihang-primary-400'
-              : progressStage === 2
+              : progressStage === 3
+                ? 'text-sihang-primary-300'
+                : progressStage === 2
+                  ? 'text-sihang-primary-200'
+                  : progressStage === 1
+                    ? 'text-sihang-primary-10'
+                    : 'text-white'
+          }`}
+        >
+          {text}
+        </span>
+        <span
+          className={`transition-opacity duration-300 ease-out ${
+            progressStage >= 2 ? 'opacity-100' : 'opacity-0'
+          } ${
+            completed
+              ? 'text-sihang-primary-400'
+              : progressStage === 3
                 ? 'text-sihang-primary-400'
-                : progressStage === 1
+                : progressStage === 2
                   ? 'text-sihang-primary-400'
-                  : 'text-white'
-        }`}
-      >
-        {progressStage >= 1 ? '청춘 낭비하러 출발' : text}
+                  : progressStage === 1
+                    ? 'text-sihang-primary-400'
+                    : 'text-white'
+          }`}
+        >
+          청춘 낭비하러 출발
+        </span>
       </span>
 
       {/* Slider Handle */}
