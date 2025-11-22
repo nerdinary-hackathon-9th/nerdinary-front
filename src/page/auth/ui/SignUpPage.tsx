@@ -1,7 +1,6 @@
 import { Header } from '@/app/layout/header/ui/Header';
 import { AuthInput } from '../components/AuthInput';
 import { useSignUpForm } from '../hooks/useSignUpForm';
-import { validatePassword, validatePasswordMatch } from '../utils/validation';
 
 const SignUpPage = () => {
   const {
@@ -10,6 +9,8 @@ const SignUpPage = () => {
     debouncedValues,
     isValid,
     nicknameCheckMessage,
+    passwordValidation,
+    passwordMatchValidation,
     handleChange,
     checkNickName,
     handleSubmit,
@@ -49,9 +50,7 @@ const SignUpPage = () => {
               value={form.password}
               onChange={handleChange('password')}
               error={
-                touched.password &&
-                debouncedValues.password.length > 0 &&
-                !validatePassword(debouncedValues.password).isValid
+                touched.password && debouncedValues.password.length > 0 && !passwordValidation.isValid
                   ? ''
                   : null
               }
@@ -66,8 +65,7 @@ const SignUpPage = () => {
               error={
                 touched.confirmPassword &&
                 debouncedValues.confirmPassword.length > 0 &&
-                !validatePasswordMatch(debouncedValues.password, debouncedValues.confirmPassword)
-                  .isValid
+                !passwordMatchValidation.isValid
                   ? ''
                   : null
               }
@@ -75,27 +73,19 @@ const SignUpPage = () => {
             {/* 비밀번호 형식 오류 */}
             {touched.password &&
               debouncedValues.password.length > 0 &&
-              !validatePassword(debouncedValues.password).isValid && (
+              !passwordValidation.isValid && (
                 <div className="h-8 mt-3 px-4 py-2 bg-red-50 rounded-md">
-                  <p className="text-xs text-red-600 font-normal">
-                    {validatePassword(debouncedValues.password).message}
-                  </p>
+                  <p className="text-xs text-red-600 font-normal">{passwordValidation.message}</p>
                 </div>
               )}
             {/* 비밀번호 불일치 */}
             {touched.confirmPassword &&
               debouncedValues.confirmPassword.length > 0 &&
-              validatePassword(debouncedValues.password).isValid &&
-              !validatePasswordMatch(debouncedValues.password, debouncedValues.confirmPassword)
-                .isValid && (
+              passwordValidation.isValid &&
+              !passwordMatchValidation.isValid && (
                 <div className="h-8 mt-3 px-4 py-2 bg-red-50 rounded-md">
                   <p className="text-xs text-red-600 font-normal">
-                    {
-                      validatePasswordMatch(
-                        debouncedValues.password,
-                        debouncedValues.confirmPassword,
-                      ).message
-                    }
+                    {passwordMatchValidation.message}
                   </p>
                 </div>
               )}

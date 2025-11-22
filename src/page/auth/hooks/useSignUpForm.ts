@@ -1,9 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { userPost } from '@/api/user/user-post';
 import { userGet } from '@/api/user/user-get';
-import { validateNickname, validateSignUpForm } from '../utils/validation';
+import {
+  validateNickname,
+  validateSignUpForm,
+  validatePassword,
+  validatePasswordMatch,
+} from '../utils/validation';
 
 export const useSignUpForm = () => {
   const navigate = useNavigate();
@@ -57,12 +62,23 @@ export const useSignUpForm = () => {
     }));
   };
 
+  // 비밀번호 유효성 검증 결과 (메모이제이션)
+  const passwordValidation = useMemo(
+    () => validatePassword(debouncedValues.password),
+    [debouncedValues.password],
+  );
+
+  const passwordMatchValidation = useMemo(
+    () => validatePasswordMatch(debouncedValues.password, debouncedValues.confirmPassword),
+    [debouncedValues.password, debouncedValues.confirmPassword],
+  );
+
   // 최종 회원가입 버튼 활성화 여부
   const isValid = validateSignUpForm(
     form.nickname,
     form.password,
     form.confirmPassword,
-    isNicknameChecked
+    isNicknameChecked,
   );
 
   /* =====================
@@ -128,6 +144,8 @@ export const useSignUpForm = () => {
     debouncedValues,
     isValid,
     nicknameCheckMessage,
+    passwordValidation,
+    passwordMatchValidation,
     handleChange,
     checkNickName,
     handleSubmit,
