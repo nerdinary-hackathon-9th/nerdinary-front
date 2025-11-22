@@ -3,6 +3,7 @@ import { Header } from '@/app/layout/header/ui/Header';
 import { GlobalNavigationBar } from '@/app/layout/navigation/GlobalNavigationBar';
 
 import { HotChallenges } from './components/HotChallenges';
+import { ProgressChallenges } from './components/ProgressChallenges';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -23,6 +24,8 @@ const HomePage = () => {
             items={mockHotChallengeData}
             onClickItem={(id) => console.log('clicked', id)}
           />
+
+          <ProgressChallenges items={mockHotChallengeData} />
         </div>
       </div>
       <GlobalNavigationBar />
