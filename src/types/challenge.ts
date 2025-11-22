@@ -10,6 +10,31 @@ export interface Challenge {
   createdAt?: string;
 }
 
+// 챌린지 상세 타입 (API 응답 구조)
+export interface ChallengeDetail {
+  id: number;
+  title: string;
+  context: string;
+  createdAt: string;
+  endAt: string;
+  thumbnailUrl: string;
+  participantsCount: number;
+}
+
+// 챌린지 참가자 타입
+export interface ChallengeParticipant {
+  id: number;
+  createdAt: string;
+  userId: number;
+  challengeId: number;
+  user: {
+    id: number;
+    password: string;
+    nickname: string;
+    createdAt: string;
+  };
+}
+
 // 챌린지 목록 조회 파라미터
 export interface ChallengeListParams {
   search?: string;
