@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Header } from '@/app/layout/header/ui/Header';
 import { compressImage } from '@/utils/compressImage';
 import CalendarIcon from '@/assets/grayCalendar.svg?react';
@@ -8,6 +8,7 @@ import CameraIcon from '@/assets/grayCameraIcon.svg?react';
 import { snapPost } from '@/api/snap/snap-post';
 
 const formatDotDateKorea = (iso: string) => {
+
   const date = new Date(iso);
   const korea = new Date(date.getTime() + 9 * 60 * 60 * 1000);
 
@@ -15,6 +16,7 @@ const formatDotDateKorea = (iso: string) => {
 };
 
 const JoinChallengePage = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const challengeId = Number(id);
 
@@ -57,9 +59,7 @@ const JoinChallengePage = () => {
         content,
         file: imageFile, // 파일 그대로 전송
       });
-
-      console.log('스냅 생성 성공:', res);
-      alert('참여 완료!');
+      navigate('/');
     } catch (err) {
       console.error('스냅 생성 실패:', err);
       alert('오류가 발생했습니다.');
