@@ -1,4 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { challengeAPI } from '@/api/challenge/challenge';
+import type { ChallengeDetail } from '@/types/challenge';
 import { Header } from '@/app/layout/header/ui/Header';
 import SlideButton from '@/components/ui/SlideButton';
 import CalendarIcon from '@/assets/calendar.svg?react';
@@ -9,6 +12,52 @@ import { SnapGrid } from './components/SnapGrid';
 const ChallengeDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [challenge, setChallenge] = useState<ChallengeDetail | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchChallengeDetail = async () => {
+      if (!id) return;
+
+      setIsLoading(true);
+      try {
+        const response = await challengeAPI.getDetail(Number(id));
+        setChallenge(response.data);
+      } catch (error) {
+        console.error('챌린지 상세 정보를 불러오는데 실패했습니다:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchChallengeDetail();
+  }, [id]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-neutral-400">로딩 중...</div>
+      </div>
+    );
+  }
+
+  if (!challenge) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-neutral-400">챌린지를 찾을 수 없습니다.</div>
+      </div>
+    );
+  }
+
+  // 날짜 포맷팅 함수
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).replace(/\. /g, '.').replace(/\.$/, '');
+  };
 
   return (
     <div className="min-h-screen">
@@ -16,22 +65,24 @@ const ChallengeDetailPage = () => {
       {/* Scrollable Content */}
       <main className="flex-1 overflow-y-auto pb-28">
         {/* Image */}
-        <img src="/example.png" className="w-full h-60 object-cover" alt="challenge" />
+        <img src={challenge.thumbnailUrl} className="w-full h-60 object-cover" alt="challenge" />
 
         {/* Title */}
         <div className="px-5 py-4 text-center">
           <div className="flex flex-col gap-1">
-            <h1 className="heading-18 text-neutral-900">갑자기 바다보고 오기</h1>
+            <h1 className="heading-18 text-neutral-900">{challenge.title}</h1>
             <div className="flex gap-2 justify-center items-center text-xs text-neutral-300 mt-1">
               <div className="flex items-center gap-1">
                 <CalendarIcon className="w-4 h-4" />
-                <span className="text-[#B4B5B9]  mr-1">2025.11.22 ~ 2025.11.23</span>
+                <span className="text-[#B4B5B9]  mr-1">
+                  {formatDate(challenge.createdAt)} ~ {formatDate(challenge.endAt)}
+                </span>
                 <DotIcon />
               </div>
 
               <div className="flex items-center gap-1">
                 <PeopleIcon />
-                <span className="text-[#B4B5B9]">100명 참여중</span>
+                <span className="text-[#B4B5B9]">{challenge.participantsCount}명 참여중</span>
               </div>
             </div>
           </div>
@@ -39,12 +90,7 @@ const ChallengeDetailPage = () => {
 
         {/* Description */}
         <div className="px-10 label-12 text-[#686B70] text-center leading-relaxed">
-          마음이 턱 막히는 날이 있지 않으셨나요? 그런 날은 갑자기 넓은 바다를 보고 오면 해결될 수도
-          있어요! 시간 되는 날, 갑자기 표를 끊고 바다 다녀오는 거 어떠세요? 마음이 턱 막히는 날이
-          있지 않으셨나요? 그런 날은 갑자기 넓은 바다를 보고 오면 해결될 수도 있어요! 시간 되는 날,
-          갑자기 표를 끊고 바다 다녀오는 거 어떠세요? 마음이 턱 막히는 날이 있지 않으셨나요? 그런
-          날은 갑자기 넓은 바다를 보고 오면 해결될 수도 있어요! 시간 되는 날, 갑자기 표를 끊고 바다
-          다녀오는 거 어떠세요?
+          {challenge.context}
         </div>
 
         {/* Gallery */}

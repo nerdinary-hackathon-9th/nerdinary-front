@@ -1,5 +1,10 @@
 import { api } from '@/lib/ky';
-import type { Challenge, ChallengeListParams, ChallengeListResponse } from '@/types/challenge';
+import type {
+  Challenge,
+  ChallengeDetail,
+  ChallengeListParams,
+  ChallengeListResponse,
+} from '@/types/challenge';
 
 export const challengeAPI = {
   // 진행중인 챌린지 목록 조회
@@ -25,8 +30,10 @@ export const challengeAPI = {
   },
 
   // 챌린지 상세 조회
-  getDetail: async (id: number): Promise<Challenge> => {
-    const response = await api.get(`challenges/${id}`).json<Challenge>();
+  getDetail: async (id: number): Promise<{ success: boolean; message: string; data: ChallengeDetail }> => {
+    const response = await api
+      .get(`api/challenge/${id}`)
+      .json<{ success: boolean; message: string; data: ChallengeDetail }>();
     return response;
   },
 

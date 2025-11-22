@@ -20,22 +20,34 @@ const ChallengeListPage = () => {
         const response = await challengeAPI.getTodayChallenges();
         console.log('API 응답:', response);
 
-        // 여러 가능한 응답 구조 처리
-        let challengesList: Challenge[] = [];
+        // API 응답 구조 처리
         const responseData = response as unknown as {
-          data?: Challenge[];
-          challenges?: Challenge[];
+          success?: boolean;
+          message?: string;
+          data?: Array<{
+            id: number;
+            title: string;
+            context: string;
+            createdAt: string;
+            endAt: string;
+            thumbnailUrl: string;
+            _count: { participants: number };
+          }>;
         };
 
-        if (Array.isArray(response)) {
-          // 응답이 직접 배열인 경우
-          challengesList = response as Challenge[];
-        } else if (response.challenges && Array.isArray(response.challenges)) {
-          // response.challenges가 배열인 경우
-          challengesList = response.challenges;
-        } else if (responseData.data && Array.isArray(responseData.data)) {
-          // response.data가 배열인 경우
-          challengesList = responseData.data;
+        let challengesList: Challenge[] = [];
+
+        if (responseData.data && Array.isArray(responseData.data)) {
+          // API 응답 데이터를 Challenge 타입으로 변환
+          challengesList = responseData.data.map((item) => ({
+            challengeId: item.id,
+            title: item.title,
+            imgSrc: item.thumbnailUrl,
+            startDate: item.createdAt,
+            endDate: item.endAt,
+            participant: item._count.participants,
+            createdAt: item.createdAt,
+          }));
         }
 
         console.log('파싱된 챌린지 목록:', challengesList);
