@@ -4,6 +4,7 @@ import type {
   ChallengeDetail,
   ChallengeListParams,
   ChallengeListResponse,
+  ChallengeParticipant,
 } from '@/types/challenge';
 
 export const challengeAPI = {
@@ -52,6 +53,16 @@ export const challengeAPI = {
   // 챌린지 삭제
   delete: async (id: number): Promise<void> => {
     await api.delete(`challenges/${id}`);
+  },
+
+  // 챌린지 참가자 목록 조회
+  getParticipants: async (
+    id: number,
+  ): Promise<{ success: boolean; message: string; data: ChallengeParticipant[] }> => {
+    const response = await api
+      .get(`api/challenge/${id}/participants`)
+      .json<{ success: boolean; message: string; data: ChallengeParticipant[] }>();
+    return response;
   },
 };
 

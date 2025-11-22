@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { challengeAPI } from '@/api/challenge/challenge';
-import type { ChallengeDetail } from '@/types/challenge';
+import type { ChallengeDetail, ChallengeParticipant } from '@/types/challenge';
 import { Header } from '@/app/layout/header/ui/Header';
 import SlideButton from '@/components/ui/SlideButton';
 import CalendarIcon from '@/assets/calendar.svg?react';
@@ -14,24 +14,29 @@ const ChallengeDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [challenge, setChallenge] = useState<ChallengeDetail | null>(null);
+  const [participants, setParticipants] = useState<ChallengeParticipant[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchChallengeDetail = async () => {
+    const fetchChallengeData = async () => {
       if (!id) return;
 
       setIsLoading(true);
       try {
-        const response = await challengeAPI.getDetail(Number(id));
-        setChallenge(response.data);
+        const [detailResponse, participantsResponse] = await Promise.all([
+          challengeAPI.getDetail(Number(id)),
+          challengeAPI.getParticipants(Number(id)),
+        ]);
+        setChallenge(detailResponse.data);
+        setParticipants(participantsResponse.data);
       } catch (error) {
-        console.error('챌린지 상세 정보를 불러오는데 실패했습니다:', error);
+        console.error('챌린지 정보를 불러오는데 실패했습니다:', error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchChallengeDetail();
+    fetchChallengeData();
   }, [id]);
 
   if (isLoading) {
@@ -89,12 +94,27 @@ const ChallengeDetailPage = () => {
           <h2 className="body-14 mb-3 text-[#686B70]">챌린지 인증내용</h2>
 
           <SnapGrid>
-            {Array.from({ length: 10 }).map((_, i) => (
-              <div
-                className="bg-neutral-100 border-neutral-100 border rounded-lg h-28"
-                key={i}
-              ></div>
-            ))}
+            {participants.length > 0 ? (
+              participants.map((participant) => (
+                <div
+                  className="bg-neutral-100 border-neutral-100 border rounded-lg h-28 flex items-center justify-center"
+                  key={participant.id}
+                >
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-neutral-700">
+                      {participant.user.nickname}
+                    </div>
+                    <div className="text-xs text-neutral-400 mt-1">
+                      {formatDateKo(participant.createdAt)}
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-10 text-neutral-400 text-sm">
+                아직 참가자가 없습니다.
+              </div>
+            )}
           </SnapGrid>
         </section>
       </main>
