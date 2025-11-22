@@ -2,10 +2,12 @@ import { Header } from '@/app/layout/header/ui/Header';
 
 const HomePage = () => {
   return (
-    <div className='w-full'>
-      <Header variant="text-close" title='dfdfdf' />
-      homepage
-    </div>
+    <>
+      <Header variant="text-close" title="dfdfdf" />
+      <div className="w-full">homepage
+        <p className=''>ddf</p>
+      </div>
+    </>
   );
 };
 
