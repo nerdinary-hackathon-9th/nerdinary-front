@@ -2,7 +2,7 @@ import { type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
-import Logo from '@/assets/react.svg?react';
+import Logo from '@/assets/GNBListIcon.svg?react'; // TODO: 바꿔야함
 import BackButton from '@/assets/backArrow.svg?react';
 import CloseButton from '@/assets/closeButton.svg?react';
 
