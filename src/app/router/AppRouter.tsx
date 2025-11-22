@@ -39,6 +39,7 @@ export const AppRouter = () => {
           element: <JoinChallengePage />,
         },
         {
+          // Todo : api endpoint에 맞춰 path 수정해야 함!
           path: 'challenge',
           element: <ChallengeDetailPage />,
         },
