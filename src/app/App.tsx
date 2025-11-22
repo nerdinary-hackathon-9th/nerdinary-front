@@ -6,7 +6,7 @@ function App() {
 
   const headerVariant = (() => {
     if (location.pathname === '/') return 'logo'; // 홈
-    if (location.pathname.startsWith('/test')) return 'back-text';
+    // if (location.pathname.startsWith('/test')) return 'back-text';
     return 'none';
   })();
   const headerTitle = (() => {
