@@ -92,20 +92,6 @@ const LoginPage = () => {
                   : null
               }
             />
-
-            {/* 닉네임 저장 체크박스 */}
-            <div className="flex items-center gap-2 mt-1">
-              <input
-                type="checkbox"
-                id="saveNickname"
-                checked={saveNickname}
-                onChange={(e) => setSaveNickname(e.target.checked)}
-                className="w-5 h-5 rounded border-sihang-neutral-200"
-              />
-              <label htmlFor="saveNickname" className="text-sihang-neutral-400 text-sm">
-                닉네임 저장
-              </label>
-            </div>
           </div>
           <button
             disabled={!isValid}

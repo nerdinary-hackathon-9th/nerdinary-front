@@ -1,59 +1,38 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { challengeAPI } from '@/api/challenge/challenge';
-import type { ChallengeDetail, ChallengeParticipant } from '@/types/challenge';
+import { challengeGet } from '@/api/challenge/challenge-get';
 import { Header } from '@/app/layout/header/ui/Header';
 import SlideButton from '@/components/ui/SlideButton';
 import CalendarIcon from '@/assets/calendar.svg?react';
 import PeopleIcon from '@/assets/people.svg?react';
 import DotIcon from '@/assets/dot.svg?react';
 import { SnapGrid } from './components/SnapGrid';
-import { formatDateKo } from '@/utils/dateFormat';
+import { snapGet } from '@/api/snap/snap-get';
+
+export interface ChallengeReseponse {
+  id: number;
+  title: string;
+  context: string;
+  createdAt: string;
+  endAt: string;
+  thumbnailUrl: string;
+  participantsCount: number;
+}
+
+const formatDotDateKorea = (iso: string) => {
+  const date = new Date(iso);
+  const korea = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+
+  return korea.toISOString().slice(0, 10).replace(/-/g, '.');
+};
+
+export interface ChallengeSnapItem {
+  imageUrl: string;
+}
 
 const ChallengeDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [challenge, setChallenge] = useState<ChallengeDetail | null>(null);
-  const [participants, setParticipants] = useState<ChallengeParticipant[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchChallengeData = async () => {
-      if (!id) return;
-
-      setIsLoading(true);
-      try {
-        const [detailResponse, participantsResponse] = await Promise.all([
-          challengeAPI.getDetail(Number(id)),
-          challengeAPI.getParticipants(Number(id)),
-        ]);
-        setChallenge(detailResponse.data);
-        setParticipants(participantsResponse.data);
-      } catch (error) {
-        console.error('챌린지 정보를 불러오는데 실패했습니다:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchChallengeData();
-  }, [id]);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-neutral-400">로딩 중...</div>
-      </div>
-    );
-  }
-
-  if (!challenge) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-neutral-400">챌린지를 찾을 수 없습니다.</div>
-      </div>
-    );
-  }
 
   const [challenge, setChallenge] = useState<ChallengeReseponse | null>(null);
   const [, setLoading] = useState(true);
@@ -89,7 +68,7 @@ const ChallengeDetailPage = () => {
       {/* Scrollable Content */}
       <main className="flex-1 overflow-y-auto pb-28">
         {/* Image */}
-        <img src={challenge.thumbnailUrl} className="w-full h-60 object-cover" alt="challenge" />
+        <img src="/example.png" className="w-full h-60 object-cover" alt="challenge" />
 
         {/* Title */}
         <div className="px-5 py-4 text-center">
@@ -99,7 +78,7 @@ const ChallengeDetailPage = () => {
               <div className="flex items-center gap-1">
                 <CalendarIcon className="w-4 h-4" />
                 <span className="text-[#B4B5B9]  mr-1">
-                  {formatDateKo(challenge.createdAt)} ~ {formatDateKo(challenge.endAt)}
+                  {formatDotDateKorea(challenge.createdAt)} ~ {formatDotDateKorea(challenge.endAt)}
                 </span>
                 <DotIcon />
               </div>
@@ -122,27 +101,11 @@ const ChallengeDetailPage = () => {
           <h2 className="body-14 mb-3 text-[#686B70]">챌린지 인증내용</h2>
 
           <SnapGrid>
-            {participants.length > 0 ? (
-              participants.map((participant) => (
-                <div
-                  className="bg-neutral-100 border-neutral-100 border rounded-lg h-28 flex items-center justify-center"
-                  key={participant.id}
-                >
-                  <div className="text-center">
-                    <div className="text-sm font-medium text-neutral-700">
-                      {participant.user.nickname}
-                    </div>
-                    <div className="text-xs text-neutral-400 mt-1">
-                      {formatDateKo(participant.createdAt)}
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="col-span-full text-center py-10 text-neutral-400 text-sm">
-                아직 참가자가 없습니다.
+            {snaps.map((snap, id) => (
+              <div key={id} className="rounded-lg overflow-hidden">
+                <img src={snap.imageUrl} className="w-full h-28 object-cover" alt="snap image" />
               </div>
-            )}
+            ))}
           </SnapGrid>
         </section>
       </main>
