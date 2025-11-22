@@ -1,15 +1,15 @@
 import SearchFilterBar from '@/components/ui/SearchFilterBar';
-import WasteCard from '@/components/ui/WasteCard';
+import ChallengeCard from '@/components/ui/ChallengeCard';
 
 const ChallengeList = () => {
   return (
     <div className="w-full flex flex-col gap-3 items-center overflow-y-scroll">
       <SearchFilterBar />
-      <WasteCard />
-      <WasteCard />
-      <WasteCard />
-      <WasteCard />
-      <WasteCard />
+      <ChallengeCard />
+      <ChallengeCard />
+      <ChallengeCard />
+      <ChallengeCard />
+      <ChallengeCard />
     </div>
   );
 };

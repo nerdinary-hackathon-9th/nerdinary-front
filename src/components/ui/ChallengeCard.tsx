@@ -1,4 +1,4 @@
-const WasteCard = () => {
+const ChallengeCard = () => {
   return (
     <div
       className="w-5/6 h-24 flex p-5 gap-5 shadow-md rounded-md border
@@ -20,4 +20,4 @@ const WasteCard = () => {
   );
 };
 
-export default WasteCard;
+export default ChallengeCard;
