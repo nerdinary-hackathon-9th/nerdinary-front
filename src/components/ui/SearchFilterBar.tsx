@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import SearchIcon from '@/assets/search.svg?react';
 import LogoIcon from '@/assets/searchBarLogo.svg?react';
 import SelectDropdown, { type SelectOption } from './SelectDropdown';
