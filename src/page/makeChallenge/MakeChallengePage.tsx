@@ -29,7 +29,7 @@ const MakeChallengePageInner = () => {
   const [content, setContent] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
+  const [, setIsUploading] = useState(false);
 
   const { startDate, endDate, setStartDate, setEndDate } = useDate();
 

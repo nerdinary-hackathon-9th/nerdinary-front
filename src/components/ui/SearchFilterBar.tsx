@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import SearchIcon from '@/assets/search.svg?react';
-import DownArrowIcon from '@/assets/downArrow.svg?react';
+import LogoIcon from '@/assets/searchBarLogo.svg?react';
+import SelectDropdown, { type SelectOption } from './SelectDropdown';
 
 interface SearchFilterBarProps {
   searchValue: string;
@@ -9,20 +9,19 @@ interface SearchFilterBarProps {
   onFilterChange: (value: string) => void;
 }
 
+const filterOptions: SelectOption[] = [
+  { value: 'new', label: '최신순' },
+  { value: 'old', label: '오래된 순' },
+  { value: 'most', label: '참여자 많은 순' },
+  { value: 'least', label: '참여자 적은 순' },
+];
+
 const SearchFilterBar = ({
   searchValue,
   onSearchChange,
   filterValue,
   onFilterChange,
 }: SearchFilterBarProps) => {
-  const [open, setOpen] = useState(false);
-
-  const toggle = () => setOpen((prev) => !prev);
-  const selectItem = (value: string) => {
-    onFilterChange(value);
-    setOpen(false);
-  };
-
   return (
     <div className="w-full flex items-center gap-4 py-3 ">
       {/* 검색 창 */}
@@ -38,62 +37,11 @@ const SearchFilterBar = ({
           className="w-full h-10 py-2 pl-10 pr-3 bg-sihang-primary-10 text-sm placeholder:text-sihang-neutral-400 rounded-full shadow-md focus:outline-none"
         />
         {/* 메뉴 아이콘 */}
-        <button className="absolute top-1.5 right-2 w-6 rounded-full bg-black text-white">
-          별
-        </button>
+        <LogoIcon className="absolute top-1.5 right-2 " />
       </div>
 
       {/* 필터 드롭다운 */}
-      <div className="relative">
-        <button
-          onClick={toggle}
-          className="
-            flex items-center gap-1 py-2 px-3
-            text-xs text-neutral-600 rounded-lg bg-white
-          "
-        >
-          {filterValue === 'new' ? '최신순' : '인기순'}
-          <DownArrowIcon className="w-4 h-4" />
-        </button>
-
-        {open && (
-          <div
-            className="
-              absolute right-0 mt-2 w-28 bg-white 
-              rounded-xl shadow-lg border p-1
-              flex flex-col z-50
-            "
-          >
-            {/* 최신순 */}
-            <button
-              onClick={() => selectItem('new')}
-              className="
-                flex items-center justify-between
-                w-full px-3 py-2 text-xs rounded-lg hover:bg-gray-100
-              "
-            >
-              <span>최신순</span>
-              {filterValue === 'new' && (
-                <span className="text-blue-500 font-semibold text-[10px]">✔</span>
-              )}
-            </button>
-
-            {/* 인기순 */}
-            <button
-              onClick={() => selectItem('popular')}
-              className="
-                flex items-center justify-between
-                w-full px-3 py-2 text-xs rounded-lg hover:bg-gray-100
-              "
-            >
-              <span>인기순</span>
-              {filterValue === 'popular' && (
-                <span className="text-blue-500 font-semibold text-[10px]">✔</span>
-              )}
-            </button>
-          </div>
-        )}
-      </div>
+      <SelectDropdown value={filterValue} onChange={onFilterChange} options={filterOptions} />
     </div>
   );
 };

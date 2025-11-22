@@ -19,7 +19,7 @@ export interface Challenge {
 
 const ChallengeListPage = () => {
   const [searchValue, setSearchValue] = useState('');
-  const [filterValue, setFilterValue] = useState('new');
+  const [filterValue, setFilterValue] = useState<'new' | 'old' | 'most' | 'least'>('new');
 
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,7 +54,7 @@ const ChallengeListPage = () => {
       result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     }
     // 인기순 정렬 (참여자 수 기준)
-    else if (filterValue === 'popular') {
+    else if (filterValue === 'most') {
       result.sort((a, b) => b._count.participants - a._count.participants);
     }
 
@@ -69,16 +69,22 @@ const ChallengeListPage = () => {
     );
   }
 
+  const handleFilterChange = (value: string) => {
+    if (value === 'new' || value === 'old' || value === 'most' || value === 'least') {
+      setFilterValue(value);
+    }
+  };
+
   return (
     <div>
-      <Header variant="text" title="낭낭 리스트" />
+      <Header variant="back-text" title="낭낭 리스트" />
 
       <div className="pb-20 px-5 w-full flex flex-col gap-3 items-center overflow-y-scroll">
         <SearchFilterBar
           searchValue={searchValue}
           onSearchChange={setSearchValue}
           filterValue={filterValue}
-          onFilterChange={setFilterValue}
+          onFilterChange={handleFilterChange}
         />
 
         {filteredData.map((item) => (

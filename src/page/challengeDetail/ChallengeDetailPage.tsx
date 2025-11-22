@@ -68,7 +68,7 @@ const ChallengeDetailPage = () => {
       {/* Scrollable Content */}
       <main className="flex-1 overflow-y-auto pb-28">
         {/* Image */}
-        <img src="/public/example.png" className="w-full h-60 object-cover" alt="challenge" />
+        <img src="/example.png" className="w-full h-60 object-cover" alt="challenge" />
 
         {/* Title */}
         <div className="px-5 py-4 text-center">

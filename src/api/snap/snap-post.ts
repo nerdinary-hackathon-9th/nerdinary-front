@@ -1,4 +1,4 @@
-import { apiVer2, api } from '@/lib/ky';
+import { apiVer2 } from '@/lib/ky';
 import type { ApiResponse } from '@/types/common';
 
 /* ===========================
@@ -30,7 +30,19 @@ export type MakeSnapResponseDTO = ApiResponse<MakeSnapResponse>;
 =========================== */
 
 export const snapPost = {
-  makeSnap: async ({ challengeId, userId, title, content, file }) => {
+  makeSnap: async ({
+    challengeId,
+    userId,
+    title,
+    content,
+    file,
+  }: {
+    challengeId: number;
+    userId: number;
+    title: string;
+    content: string;
+    file?: File | null;
+  }): Promise<MakeSnapResponseDTO> => {
     const formData = new FormData();
 
     formData.append('title', title);
@@ -48,6 +60,6 @@ export const snapPost = {
           'Content-Type': undefined,
         },
       })
-      .json();
+      .json<MakeSnapResponseDTO>();
   },
 };
