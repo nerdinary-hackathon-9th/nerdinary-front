@@ -1,21 +1,17 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/PretendardVariable.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --font-family-pretendard: 'Pretendard', sans-serif;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -50,58 +46,8 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+  font-family: var(--font-family-pretendard);
 }
 
 @theme inline {
@@ -183,4 +129,214 @@ button:focus-visible {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@theme {
+  /* ===========================
+     SIHANG - NEUTRAL (Grayscale)
+     =========================== */
+  --color-sihang-neutral-10: #f8f8f9;
+  --color-sihang-neutral-50: #f4f4f5;
+  --color-sihang-neutral-100: #eeeeee;
+  --color-sihang-neutral-200: #d0d1d3;
+  --color-sihang-neutral-300: #b4b6b9;
+  --color-sihang-neutral-400: #9c9ea3;
+  --color-sihang-neutral-500: #7f8287;
+  --color-sihang-neutral-600: #686b70;
+  --color-sihang-neutral-700: #525458;
+  --color-sihang-neutral-800: #3c3d40;
+  --color-sihang-neutral-900: #212223;
+  --color-sihang-neutral-1000: #000000;
+
+  /* ===========================
+     SIHANG PRIMARY (Sky Blue)
+     =========================== */
+  --color-sihang-primary-10: #f4fbff;
+  --color-sihang-primary-50: #e4f6ff;
+  --color-sihang-primary-100: #bce8fe;
+  --color-sihang-primary-200: #93d9fd;
+  --color-sihang-primary-300: #70cafa;
+  --color-sihang-primary-400: #5ebef8;
+  --color-sihang-primary-500: #54b2f7;
+  --color-sihang-primary-600: #4fa4e7;
+  --color-sihang-primary-700: #4890d3;
+  --color-sihang-primary-800: #427fbf;
+  --color-sihang-primary-900: #365f9c;
+  --color-sihang-primary-1000: #2b4477;
+
+  /* ===========================
+     SIHANG SECONDARY (Koral Orange)
+     =========================== */
+  --color-sihang-secondary-50: #fff6ee;
+  --color-sihang-secondary-100: #ffe9d6;
+  --color-sihang-secondary-200: #ffdbbc;
+  --color-sihang-secondary-300: #ffc799;
+  --color-sihang-secondary-400: #ffb77f;
+  --color-sihang-secondary-500: #ffa873;
+  --color-sihang-secondary-600: #f08f57;
+  --color-sihang-secondary-700: #d67840;
+  --color-sihang-secondary-800: #b8612a;
+  --color-sihang-secondary-900: #8a4518;
+
+  /* ===========================
+     SIHANG TYPOGRAPHY — HEADINGS
+     =========================== */
+
+  /* heading-24 */
+  --font-sihang-heading-24-size: 24px;
+  --font-sihang-heading-24-weight: 600;
+  --font-sihang-heading-24-line: 120%;
+
+  /* heading-22 */
+  --font-sihang-heading-22-size: 22px;
+  --font-sihang-heading-22-weight: 700;
+  --font-sihang-heading-22-line: 26px;
+
+  /* heading-20 */
+  --font-sihang-heading-20-size: 20px;
+  --font-sihang-heading-20-weight: 700;
+  --font-sihang-heading-20-line: 120%;
+
+  /* heading-18 */
+  --font-sihang-heading-18-size: 18px;
+  --font-sihang-heading-18-weight: 700;
+  --font-sihang-heading-18-line: 120%;
+
+  /* heading-16 */
+  --font-sihang-heading-16-size: 16px;
+  --font-sihang-heading-16-weight: 700;
+  --font-sihang-heading-16-line: 120%;
+
+  /* heading-14 */
+  --font-sihang-heading-14-size: 14px;
+  --font-sihang-heading-14-weight: 700;
+  --font-sihang-heading-14-line: 120%;
+
+  /* ===========================
+     SIHANG TYPOGRAPHY — BODY
+     =========================== */
+
+  /* body-16 */
+  --font-sihang-body-16-size: 16px;
+  --font-sihang-body-16-weight: 500;
+  --font-sihang-body-16-line: 100%;
+
+  /* body-14 */
+  --font-sihang-body-14-size: 14px;
+  --font-sihang-body-14-weight: 500;
+  --font-sihang-body-14-line: 140%;
+
+  /* body-12 */
+  --font-sihang-body-12-size: 12px;
+  --font-sihang-body-12-weight: 500;
+  --font-sihang-body-12-line: 140%;
+
+  /* ===========================
+     SIHANG TYPOGRAPHY — LABEL
+     =========================== */
+
+  /* label-16 */
+  --font-sihang-label-16-size: 16px;
+  --font-sihang-label-16-weight: 400;
+  --font-sihang-label-16-line: 140%;
+
+  /* label-14 */
+  --font-sihang-label-14-size: 14px;
+  --font-sihang-label-14-weight: 400;
+  --font-sihang-label-14-line: 140%;
+
+  /* label-12 */
+  --font-sihang-label-12-size: 12px;
+  --font-sihang-label-12-weight: 400;
+  --font-sihang-label-12-line: 140%;
+
+  /* label-10 */
+  --font-sihang-label-10-size: 10px;
+  --font-sihang-label-10-weight: 400;
+  --font-sihang-label-10-line: 140%;
+}
+
+@layer components {
+  /* heading */
+  .heading-24 {
+    font-size: var(--font-sihang-heading-24-size);
+    font-weight: var(--font-sihang-heading-24-weight);
+    line-height: var(--font-sihang-heading-24-line);
+  }
+  .heading-22 {
+    font-size: var(--font-sihang-heading-22-size);
+    font-weight: var(--font-sihang-heading-22-weight);
+    line-height: var(--font-sihang-heading-22-line);
+  }
+  .heading-20 {
+    font-size: var(--font-sihang-heading-20-size);
+    font-weight: var(--font-sihang-heading-20-weight);
+    line-height: var(--font-sihang-heading-20-line);
+  }
+  .heading-18 {
+    font-size: var(--font-sihang-heading-18-size);
+    font-weight: var(--font-sihang-heading-18-weight);
+    line-height: var(--font-sihang-heading-18-line);
+  }
+  .heading-16 {
+    font-size: var(--font-sihang-heading-16-size);
+    font-weight: var(--font-sihang-heading-16-weight);
+    line-height: var(--font-sihang-heading-16-line);
+  }
+  .heading-14 {
+    font-size: var(--font-sihang-heading-14-size);
+    font-weight: var(--font-sihang-heading-14-weight);
+    line-height: var(--font-sihang-heading-14-line);
+  }
+
+  /* BODY */
+  .body-16 {
+    font-size: var(--font-sihang-body-16-size);
+    font-weight: var(--font-sihang-body-16-weight);
+    line-height: var(--font-sihang-body-16-line);
+  }
+
+  .body-14 {
+    font-size: var(--font-sihang-body-14-size);
+    font-weight: var(--font-sihang-body-14-weight);
+    line-height: var(--font-sihang-body-14-line);
+  }
+
+  .body-12 {
+    font-size: var(--font-sihang-body-12-size);
+    font-weight: var(--font-sihang-body-12-weight);
+    line-height: var(--font-sihang-body-12-line);
+  }
+
+  /* LABEL */
+  .label-16 {
+    font-size: var(--font-sihang-label-16-size);
+    font-weight: var(--font-sihang-label-16-weight);
+    line-height: var(--font-sihang-label-16-line);
+  }
+
+  .label-14 {
+    font-size: var(--font-sihang-label-14-size);
+    font-weight: var(--font-sihang-label-14-weight);
+    line-height: var(--font-sihang-label-14-line);
+  }
+
+  .label-12 {
+    font-size: var(--font-sihang-label-12-size);
+    font-weight: var(--font-sihang-label-12-weight);
+    line-height: var(--font-sihang-label-12-line);
+  }
+
+  .label-10 {
+    font-size: var(--font-sihang-label-10-size);
+    font-weight: var(--font-sihang-label-10-weight);
+    line-height: var(--font-sihang-label-10-line);
+  }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
 }
