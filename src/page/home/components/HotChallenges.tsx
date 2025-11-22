@@ -1,18 +1,28 @@
 import PeopleIcon from '@/assets/people.svg?react';
 
-interface HotChallengeItem {
+export interface HotChallenge {
   id: number;
   title: string;
-  imgSrc: string;
-  startDate: string;
-  endDate: string;
-  participant: number;
+  context: string;
+  createdAt: string;
+  endAt: string;
+  thumbnailUrl: string;
+  _count: {
+    participants: number;
+  };
 }
 
 interface HotChallengesScrollProps {
-  items: HotChallengeItem[];
+  items: HotChallenge[];
   onClickItem?: (id: number) => void;
 }
+
+const formatDotDateKorea = (iso: string) => {
+  const date = new Date(iso);
+  const korea = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+
+  return korea.toISOString().slice(0, 10).replace(/-/g, '.');
+};
 
 export const HotChallenges = ({ items, onClickItem }: HotChallengesScrollProps) => {
   return (
@@ -30,13 +40,13 @@ export const HotChallenges = ({ items, onClickItem }: HotChallengesScrollProps) 
             {/* 이미지 */}
             <div className="relative w-35 h-25">
               <img
-                src={item.imgSrc}
+                src={item.thumbnailUrl}
                 className="w-35 h-25 object-cover rounded-[8px]"
                 alt={item.title}
               />
 
               {/* HOT 뱃지 */}
-              {item.participant >= 100 && (
+              {item._count.participants >= 100 && (
                 <div
                   className="
                       absolute top-0 left-0
@@ -59,14 +69,14 @@ export const HotChallenges = ({ items, onClickItem }: HotChallengesScrollProps) 
             {/* 날짜 */}
             <div className="flex items-center gap-1 label-12 text-[#A0A2A7] mt-1">
               <span>
-                {item.startDate} ~ {item.endDate}
+                {formatDotDateKorea(item.createdAt)} ~ {formatDotDateKorea(item.endAt)}
               </span>
             </div>
 
             {/* 참여자 */}
             <div className="flex items-center gap-1 label-12 text-[#A0A2A7] mt-1">
               <PeopleIcon className="w-4 h-4" />
-              <span>{item.participant}명 참여 중</span>
+              <span>{item._count.participants}명 참여 중</span>
             </div>
           </div>
         ))}
