@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ChallengeCardAtMyPage } from './ChallengeCardAtMyPage';
 import { userGet } from '@/api/user/user-get';
 
@@ -32,7 +32,7 @@ export const JoinList = () => {
 
   if (list.length === 0)
     return <p className="p-5 text-sm text-gray-400">참여중인 낭낭이 없습니다!</p>;
-  
+
   return (
     <div className="flex flex-col gap-4">
       {list.map((item) => (

@@ -4,7 +4,11 @@ interface AuthInputProps {
   value: string;
   type?: string;
   error?: string | null;
+  success?: string | null;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  maxLength?: number;
+  className?: string;
+  renderButton?: () => React.ReactNode;
 }
 
 export const AuthInput = ({
@@ -13,19 +17,34 @@ export const AuthInput = ({
   value,
   type = 'text',
   error,
+  success,
   onChange,
+  maxLength,
+  className = '',
+  renderButton,
 }: AuthInputProps) => {
+  const getBorderColor = () => {
+    if (error) return 'border-red-500';
+    if (success) return 'border-green-500';
+    return 'border-gray-300';
+  };
+
   return (
     <div>
-      <label className="text-sm text-gray-600">{label}</label>
-      <input
-        type={type}
-        value={value}
-        placeholder={placeholder}
-        onChange={onChange}
-        className="w-full border rounded-md p-3 mt-1"
-      />
-      {error && <p className="text-xs text-red-500 mt-1 ml-2">{error}</p>}
+      {label && <label className="block text-base text-gray-700 mb-3">{label}</label>}
+      <div className={renderButton ? 'flex gap-2' : ''}>
+        <input
+          type={type}
+          value={value}
+          placeholder={placeholder}
+          onChange={onChange}
+          maxLength={maxLength}
+          className={`${renderButton ? 'flex-1' : 'w-full'} border ${getBorderColor()} rounded-lg px-4 py-3.5 text-base placeholder:text-gray-400 ${className}`}
+        />
+        {renderButton && renderButton()}
+      </div>
+      {error && <p className="text-sm text-red-600 mt-2">{error}</p>}
+      {success && <p className="text-sm text-green-600 mt-2">{success}</p>}
     </div>
   );
 };

@@ -39,7 +39,7 @@ export const mockHotChallengeData = [
   {
     id: 1,
     title: '갑자기 바다 보러가기!!',
-    imgSrc: '/public/listexam1.png',
+    imgSrc: '/listexam1.png',
     startDate: '2025.11.22',
     endDate: '2025.11.23',
     participant: 128,
@@ -47,7 +47,7 @@ export const mockHotChallengeData = [
   {
     id: 2,
     title: '한겨울에 아이스크림 먹기',
-    imgSrc: '/public/listexam2.png',
+    imgSrc: '/listexam2.png',
     startDate: '2025.11.22',
     endDate: '2025.11.23',
     participant: 145,
@@ -63,7 +63,7 @@ export const mockHotChallengeData = [
   {
     id: 4,
     title: '잠시 노트북 덮고 걷기',
-    imgSrc: '/public/listexam4.png',
+    imgSrc: '/listexam4.png',
     startDate: '2025.11.24',
     endDate: '2025.11.25',
     participant: 89,
@@ -71,7 +71,7 @@ export const mockHotChallengeData = [
   {
     id: 5,
     title: '수족관에서 힐링하기',
-    imgSrc: '/public/listexam5.png',
+    imgSrc: '/listexam5.png',
     startDate: '2025.11.24',
     endDate: '2025.11.25',
     participant: 173,
