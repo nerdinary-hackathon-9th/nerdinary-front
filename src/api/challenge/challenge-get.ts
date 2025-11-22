@@ -39,7 +39,7 @@ export const challengeGet = {
   },
 
   getChallengeInfo: async (challengeId: number): Promise<ChallengeReseponseDTO> => {
-    const response = await api.get(`challenge/${challengeId}`).json<ChallengeReseponseDTO>();
+    const response = await api.get(`api/challenge/${challengeId}`).json<ChallengeReseponseDTO>();
     return response;
   },
 };

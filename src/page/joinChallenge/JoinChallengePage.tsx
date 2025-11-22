@@ -1,26 +1,58 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Header } from '@/app/layout/header/ui/Header';
 import { compressImage } from '@/utils/compressImage';
 import CalendarIcon from '@/assets/grayCalendar.svg?react';
 import InfoIcon from '@/assets/grayInfoIcon.svg?react';
 import CameraIcon from '@/assets/grayCameraIcon.svg?react';
+import { imagePost } from '@/api/image/image-post';
+
+const formatDotDateKorea = (iso: string) => {
+  const date = new Date(iso);
+  const korea = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+
+  return korea.toISOString().slice(0, 10).replace(/-/g, '.');
+};
 
 const JoinChallengePage = () => {
+  const { state } = useLocation();
+
   const [content, setContent] = useState('');
-  const [image, setImage] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null); // 압축된 File
+  const [imageUrl, setImageUrl] = useState<string | null>(null); // 업로드 후 URL
+  const [, setIsUploading] = useState(false);
+
+  const title = state?.title;
+  const createdAt = state?.createdAt;
+  const endAt = state?.endAt;
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const compressed = await compressImage(file);
-    setImage(compressed);
+    try {
+      setIsUploading(true);
+
+      const compressed = await compressImage(file);
+      setImageFile(compressed);
+
+      const res = await imagePost.uploadImage(compressed);
+
+      setImageUrl(res.data.imageUrl);
+
+      console.log('업로드 성공:', res.data.imageUrl);
+    } catch (err) {
+      console.error('이미지 업로드 실패:', err);
+      setImageUrl(null);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const handleSubmit = () => {
     console.log({
       content,
-      image,
+      imageUrl,
     });
     alert('참여 완료!');
   };
@@ -40,10 +72,10 @@ const JoinChallengePage = () => {
       <div className="px-5 flex flex-col">
         {/* 챌린지 타이틀 */}
         <div className="py-4">
-          <h2 className="heading-18 text=[#212223] mb-2">TITLE</h2>
+          <h2 className="heading-18 text=[#212223] mb-2">{title}</h2>
           <p className="body-14 text-sihang-neutral-400">
             <div className="flex flex-row items-center gap-1">
-              <CalendarIcon /> DATE
+              <CalendarIcon /> {formatDotDateKorea(createdAt)} ~ {formatDotDateKorea(endAt)}
             </div>
           </p>
         </div>
@@ -53,7 +85,7 @@ const JoinChallengePage = () => {
           <p className="body-14 mb-2 text-[#686B70]">챌린지 내용</p>
           {/* 이미지 업로드 UI — 단일 이미지 */}
           <div className="w-full">
-            {!image ? (
+            {!imageFile ? (
               // 업로드 전
               <label
                 className="
@@ -78,12 +110,10 @@ const JoinChallengePage = () => {
               // 업로드 후 — 썸네일
               <label className="block w-full rounded-[12px] overflow-hidden cursor-pointer">
                 <img
-                  src={URL.createObjectURL(image)}
+                  src={URL.createObjectURL(imageFile)}
                   alt="uploaded"
                   className="w-full h-[220px] object-cover rounded-[12px]"
                 />
-
-                {/* 클릭하면 다시 업로드 */}
                 <input
                   type="file"
                   accept="image/*"
