@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+import { AuthInput } from '../components/AuthInput';
+import { nicknameRegex, passwordRegex } from '../utils/regex';
+
+const LoginPage = () => {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -19,9 +22,6 @@ const Login = () => {
     setForm((prev) => ({ ...prev, [key]: value }));
     setTouched((prev) => ({ ...prev, [key]: true }));
   };
-
-  const nicknameRegex = /^[a-zA-Z0-9가-힣]{2,10}$/;
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*?])[A-Za-z\d!@#$%^&*?]{8,20}$/;
 
   const isValid = nicknameRegex.test(form.nickname) && passwordRegex.test(form.password);
 
@@ -43,33 +43,30 @@ const Login = () => {
 
       {/* Input Section */}
       <section className="space-y-4">
-        <div>
-          <label className="text-sm text-gray-600">닉네임</label>
-          <input
-            type="text"
-            placeholder="닉네임 입력"
-            value={form.nickname}
-            onChange={handleChange('nickname')}
-            className="w-full border rounded-md p-3 mt-1"
-          />
-          {touched.nickname && form.nickname.length > 0 && !nicknameRegex.test(form.nickname) && (
-            <p className="text-xs text-red-500 mt-1 ml-2">유효한 닉네임이 아닙니다.</p>
-          )}
-        </div>
+        <AuthInput
+          label="닉네임"
+          placeholder="닉네임 입력"
+          value={form.nickname}
+          onChange={handleChange('nickname')}
+          error={
+            touched.nickname && !nicknameRegex.test(form.nickname)
+              ? '유효한 닉네임이 아닙니다.'
+              : null
+          }
+        />
 
-        <div>
-          <label className="text-sm text-gray-600">비밀번호</label>
-          <input
-            type="password"
-            placeholder="비밀번호 입력"
-            value={form.password}
-            onChange={handleChange('password')}
-            className="w-full border rounded-md p-3 mt-1"
-          />
-          {touched.password && form.password.length > 0 && !passwordRegex.test(form.password) && (
-            <p className="text-xs text-red-500 mt-1 ml-2">비밀번호 형식이 올바르지 않습니다.</p>
-          )}
-        </div>
+        <AuthInput
+          label="비밀번호"
+          placeholder="비밀번호 입력"
+          type="password"
+          value={form.password}
+          onChange={handleChange('password')}
+          error={
+            touched.password && !passwordRegex.test(form.password)
+              ? '비밀번호 형식이 올바르지 않습니다.'
+              : null
+          }
+        />
       </section>
 
       {/* CTA */}
@@ -94,4 +91,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;
