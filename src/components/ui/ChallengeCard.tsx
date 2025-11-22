@@ -44,7 +44,7 @@ const ChallengeCard = ({
   const allTags = [...conditionalTags, ...tags];
 
   const handleClick = () => {
-    navigate(`/challenge/${challengeId}`);
+    navigate(`/challenge-detail/${challengeId}`);
   };
 
   return (
