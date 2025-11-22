@@ -4,7 +4,7 @@ import { sanitizeInput } from '@/utils/sanitizeInput';
 
 import { UploadImageSection } from './components/UploadImageSection';
 
-const MakeNewChorePage = () => {
+const MakeChallengePage = () => {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
   const [content, setContent] = useState('');
@@ -78,4 +78,4 @@ const MakeNewChorePage = () => {
   );
 };
 
-export default MakeNewChorePage;
+export default MakeChallengePage;

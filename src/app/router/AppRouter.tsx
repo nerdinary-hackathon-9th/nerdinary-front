@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import HomePage from '@/page/home/HomePage';
 import TestPage from '@/page/test/TestPage';
-import MakeNewChorePage from '@/page/makeChore/MakeChorePage';
+import MakeChallengePage from '@/page/makeChallenge/MakeChallengePage';
 
 import App from '../App';
 
@@ -18,8 +18,8 @@ export const AppRouter = () => {
           element: <TestPage />,
         },
         {
-          path: 'make-new-chore',
-          element: <MakeNewChorePage />,
+          path: 'make-new-challenge',
+          element: <MakeChallengePage />,
         },
       ],
     },
