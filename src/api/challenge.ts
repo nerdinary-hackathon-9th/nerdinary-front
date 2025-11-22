@@ -1,29 +1,5 @@
 import { api } from '@/lib/ky';
-
-// 챌린지 목록 응답 타입
-export interface Challenge {
-  challengeId: number;
-  title: string;
-  imgSrc: string;
-  startDate: string;
-  endDate: string;
-  participant: number;
-  tags?: string[];
-  createdAt?: string;
-}
-
-export interface ChallengeListParams {
-  search?: string;
-  sort?: 'new' | 'popular';
-  page?: number;
-  limit?: number;
-}
-
-export interface ChallengeListResponse {
-  challenges: Challenge[];
-  totalCount?: number;
-  currentPage?: number;
-}
+import type { Challenge, ChallengeListParams, ChallengeListResponse } from '@/types/challenge';
 
 export const challengeAPI = {
   // 챌린지 목록 조회
@@ -65,3 +41,6 @@ export const challengeAPI = {
     await api.delete(`challenges/${id}`);
   },
 };
+
+// 타입 re-export (편의성을 위해)
+export type { Challenge, ChallengeListParams, ChallengeListResponse } from '@/types/challenge';

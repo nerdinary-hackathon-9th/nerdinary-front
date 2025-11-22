@@ -51,18 +51,3 @@ export const authAPI = {
 
 // 이전 버전과의 호환성을 위해 유지
 export const userPost = authAPI;
-
-// 타입 re-export (편의성을 위해)
-export type {
-  ApiResponse,
-  LoginRequest,
-  LoginData,
-  SignupRequest,
-  SignupData,
-  CheckNicknameData,
-  UserChallengesData,
-  JoinChallengeRequest,
-  JoinChallengeData,
-  ChallengeInfo,
-  ParticipantChallenge,
-} from './types/user.types';
