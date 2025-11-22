@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -183,4 +183,11 @@ button:focus-visible {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
 }
