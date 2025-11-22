@@ -26,7 +26,8 @@ const JoinChallengePage = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    // page-fade-in 구리면 지우기
+    <div className="flex flex-col min-h-screen bg-white page-fade-in">
       <Header variant="back-text" title="참여하기" />
       {/* 참여 독려 배너 */}
       {/* // TODO: 참여인원 넣기 */}
