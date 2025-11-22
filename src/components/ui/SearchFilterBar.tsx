@@ -1,5 +1,6 @@
 import SearchIcon from '@/assets/search.svg?react';
 import DownArrowIcon from '@/assets/downArrow.svg?react';
+import LogoIcon from '@/assets/searchBarLogo.svg?react';
 
 interface SearchFilterBarProps {
   searchValue: string;
@@ -14,7 +15,6 @@ const SearchFilterBar = ({
   filterValue,
   onFilterChange,
 }: SearchFilterBarProps) => {
-
   return (
     <div className="w-5/6 flex items-center gap-1 py-3 ">
       {/* 검색 창 */}
@@ -30,9 +30,7 @@ const SearchFilterBar = ({
           className="w-full h-10 py-2 pl-10 pr-3 bg-sihang-primary-10 text-sm placeholder:text-sihang-neutral-400 rounded-full shadow-md focus:outline-none focus:border-sihang"
         />
         {/* 메뉴 아이콘 */}
-        <button className="absolute top-1.5 right-2 w-6 rounded-full bg-black text-white">
-          별
-        </button>
+        <LogoIcon className="absolute top-1.5 right-2" />
       </div>
 
       {/* 필터 드롭다운 */}

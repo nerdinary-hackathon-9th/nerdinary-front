@@ -43,6 +43,10 @@ export const AppRouter = () => {
           path: 'mypage',
           element: <MyPage />,
         },
+        {
+          path: 'list',
+          element: <ChallengeList />,
+        },
       ],
     },
   ]);
