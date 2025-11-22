@@ -56,7 +56,7 @@ const JoinChallengePage = () => {
               // 업로드 전
               <label
                 className="
-                    w-full h-[220px] rounded-[12px] border border-sihang-neutral-100
+                    w-full h-[220px] rounded-[12px] border border-dashed border-sihang-neutral-100
                     bg-sihang-neutral-10 flex flex-col items-center justify-center
                     cursor-pointer
                 "
@@ -114,7 +114,7 @@ const JoinChallengePage = () => {
       {/* 완료 버튼 */}
       <div className="mt-auto mb-4">
         <button
-          disabled={!image}
+          disabled={!image || !content}
           onClick={handleSubmit}
           className="fixed bottom-4 inset-x-4 h-14 py-3 rounded-xl bg-blue-400 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
         >
