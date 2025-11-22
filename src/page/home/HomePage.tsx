@@ -28,6 +28,22 @@ const HomePage = () => {
           <ProgressChallenges items={mockHotChallengeData} />
         </div>
       </div>
+
+      <button
+        onClick={() => navigate('/make-new-challenge')}
+        className="
+          fixed bottom-18 right-5  
+          flex items-center justify-center gap-2 py-3
+          rounded-full shadow-lg
+          bg-sihang-primary-400 text-white
+          heading-16 w-[120px] h-[48px]
+          active:scale-95 transition
+        "
+      >
+        <span className="text-[20px] font-bold">+</span>
+        낭낭 만들기
+      </button>
+
       <GlobalNavigationBar />
     </div>
   );
