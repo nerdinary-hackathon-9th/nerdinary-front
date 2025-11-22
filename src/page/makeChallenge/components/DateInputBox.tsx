@@ -10,7 +10,7 @@ export const DateInputBox = ({
   label: string;
   value: string;
   placeholder: string;
-  onClick: () => void;
+  onClick?: () => void;
 }) => {
   const isSelected = Boolean(value);
 

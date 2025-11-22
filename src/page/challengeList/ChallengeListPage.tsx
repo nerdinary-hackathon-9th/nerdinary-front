@@ -1,80 +1,73 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import SearchFilterBar from '@/components/ui/SearchFilterBar';
 import ChallengeCard from '@/components/ui/ChallengeCard';
 import { GlobalNavigationBar } from '@/app/layout/navigation/GlobalNavigationBar';
 import { Header } from '@/app/layout/header/ui/Header';
+import { challengeGet } from '@/api/challenge/challenge-get';
 
-const mockData = [
-  {
-    title: '갑자기 바다보고 오기!!!',
-    imgSrc: '/listexam1.png',
-    startDate: '2025.11.22',
-    endDate: '2025.11.23',
-    participant: 112,
-    challengeId: 1,
-  },
-  {
-    title: '비오는 날 비 맞으면서 걷기',
-    imgSrc: '/listexam2.png',
-    startDate: '2025.11.23',
-    endDate: '2025.11.24',
-    participant: 55,
-    challengeId: 2,
-  },
-  {
-    title: '본가에 강아지 보러 다녀오기',
-    imgSrc: '/listexam3.png',
-    startDate: '2025.11.24',
-    endDate: '2025.11.25',
-    participant: 23,
-    challengeId: 3,
-  },
-
-  {
-    title: '겨울에 아이스크림 먹기!',
-    imgSrc: '/listexam4.png',
-    startDate: '2025.11.25',
-    endDate: '2025.11.26',
-    participant: 241,
-    challengeId: 4,
-  },
-  {
-    title: '잠시 노트북 덮고 쉬자',
-    imgSrc: '/listexam5.png',
-    startDate: '2025.11.26',
-    endDate: '2025.11.27',
-    participant: 79,
-    challengeId: 5,
-  },
-];
+export interface Challenge {
+  id: number;
+  title: string;
+  context: string;
+  createdAt: string;
+  endAt: string;
+  thumbnailUrl: string;
+  _count: {
+    participants: number;
+  };
+}
 
 const ChallengeListPage = () => {
   const [searchValue, setSearchValue] = useState('');
   const [filterValue, setFilterValue] = useState<'new' | 'old' | 'most' | 'least'>('new');
 
-  const filteredData = useMemo(() => {
-    let filtered = [...mockData];
+  const [challenges, setChallenges] = useState<Challenge[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    // 검색어 필터링
-    if (searchValue.trim()) {
-      filtered = filtered.filter((item) =>
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await challengeGet.getAllChallenge();
+        setChallenges(res.data); // 배열 그대로 저장
+      } catch (err) {
+        console.error('전체 챌린지 조회 실패:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const filteredData = useMemo(() => {
+    let result = [...challenges];
+
+    // 검색 필터
+    if (searchValue) {
+      result = result.filter((item) =>
         item.title.toLowerCase().includes(searchValue.toLowerCase()),
       );
     }
 
-    // 정렬
+    // 정렬 (createdAt 기준 최신순)
     if (filterValue === 'new') {
-      filtered.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
-    } else if (filterValue === 'old') {
-      filtered.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
-    } else if (filterValue === 'most') {
-      filtered.sort((a, b) => b.participant - a.participant);
-    } else if (filterValue === 'least') {
-      filtered.sort((a, b) => a.participant - b.participant);
+      result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    }
+    // 인기순 정렬 (참여자 수 기준)
+    else if (filterValue === 'most') {
+      result.sort((a, b) => b._count.participants - a._count.participants);
     }
 
-    return filtered;
-  }, [searchValue, filterValue]);
+    return result;
+  }, [searchValue, filterValue, challenges]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p>로딩 중...</p>
+      </div>
+    );
+  }
 
   const handleFilterChange = (value: string) => {
     if (value === 'new' || value === 'old' || value === 'most' || value === 'least') {
@@ -94,12 +87,16 @@ const ChallengeListPage = () => {
           onFilterChange={handleFilterChange}
         />
 
-        {filteredData.length === 0 && (
-          <div className="py-10 text-neutral-400 text-sm">검색 결과가 없습니다.</div>
-        )}
-
-        {filteredData.map((item, idx) => (
-          <ChallengeCard key={item.challengeId || idx} {...item} />
+        {filteredData.map((item) => (
+          <ChallengeCard
+            key={item.id}
+            challengeId={item.id}
+            title={item.title}
+            imgSrc={item.thumbnailUrl}
+            startDate={item.createdAt.slice(0, 10).replace(/-/g, '.')}
+            endDate={item.endAt.slice(0, 10).replace(/-/g, '.')}
+            participant={item._count.participants}
+          />
         ))}
       </div>
       <GlobalNavigationBar />

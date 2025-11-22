@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChallengeCardAtMyPage } from './ChallengeCardAtMyPage';
 import { userGet } from '@/api/user/user-get';
 

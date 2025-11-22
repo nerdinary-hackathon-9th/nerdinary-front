@@ -5,15 +5,15 @@ import { Toaster } from 'sonner';
 function App() {
   const location = useLocation();
 
-  // useEffect(() => {
-  //   const userId = localStorage.getItem('userId');
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
 
-  //   const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
+    const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
 
-  //   if (!userId && !isAuthPage) {
-  //     window.location.replace('/login');
-  //   }
-  // }, [location.pathname]);
+    if (!userId && !isAuthPage) {
+      window.location.replace('/login');
+    }
+  }, [location.pathname]);
 
   return (
     <>

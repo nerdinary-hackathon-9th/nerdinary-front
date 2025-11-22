@@ -52,4 +52,6 @@ export const userPost = {
       .json<RegisterChallengeResponseDTO>();
     return response;
   },
+
+  
 };
