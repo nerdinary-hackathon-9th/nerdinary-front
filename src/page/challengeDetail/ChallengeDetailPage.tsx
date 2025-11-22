@@ -1,11 +1,17 @@
+import { useParams } from 'react-router-dom';
+import { Header } from '@/app/layout/header/ui/Header';
 import SlideButton from '@/components/ui/SlideButton';
-
 import CalendarIcon from '@/assets/calendar.svg?react';
 import PeopleIcon from '@/assets/people.svg?react';
 
+import { SnapGrid } from './components/SnapGrid';
+
 const ChallengeDetailPage = () => {
+  const { id } = useParams();
+
   return (
-    <div className="relative h-[calc(100dvh-48px)] flex flex-col">
+    <div className="min-h-screen">
+      <Header variant="back" />
       {/* Scrollable Content */}
       <main className="flex-1 overflow-y-auto pb-32">
         {/* Image */}
@@ -43,19 +49,19 @@ const ChallengeDetailPage = () => {
         <section className="px-5 mt-6">
           <h2 className="font-medium mb-3 text-sm text-neutral-500">챌린지 인증내용</h2>
 
-          <div className="grid grid-cols-3 gap-3">
-            {Array.from({ length: 6 }).map((_, i) => (
+          <SnapGrid>
+            {Array.from({ length: 10 }).map((_, i) => (
               <div
                 className="bg-neutral-100 border-neutral-100 border rounded-lg h-28"
                 key={i}
               ></div>
             ))}
-          </div>
+          </SnapGrid>
         </section>
       </main>
 
       {/* Slide CTA */}
-      <div className="absolute bottom-5 left-0 w-full px-5">
+      <div className="fixed bottom-5 left-0 w-full px-5">
         <SlideButton text="참여하기" onComplete={() => alert('참여 완료')} />
       </div>
     </div>
