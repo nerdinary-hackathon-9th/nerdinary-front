@@ -39,7 +39,7 @@ const HomePage = () => {
       <div className="border border-b border-[#F3F3F5] " />
       <div className="flex flex-col items-center justify-center px-5">
         {/* <HomePageSvg className="w-full" /> */}
-        <img src="/public/homepage.png" className="relative mt-5" />
+        <img src="/homepage.png" className="relative mt-5" />
         <button
           className="transparant w-48 h-14 absolute top-47 left-8"
           onClick={() => navigate('challenge-list')}
