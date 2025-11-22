@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 
 import Logo from '@/assets/react.svg?react';
 import BackButton from '@/assets/backArrow.svg?react';
-import CloseButton from '@/assets/react.svg?react';
+import CloseButton from '@/assets/closeButton.svg?react';
 
 interface InnerHeaderProps {
   left?: ReactNode;
@@ -23,7 +23,7 @@ export const HeaderInner = ({ left, right, className }: InnerHeaderProps) => {
   return (
     <header className={cn('flex items-center justify-between h-12 px-4 border-none', className)}>
       <div className="flex-1 ml-3">{left}</div>
-      <div className="flex-1 flex justify-end">{right}</div>
+      <div className="flex-1 flex justify-end mr-2">{right}</div>
     </header>
   );
 };
@@ -57,7 +57,7 @@ export const Header = ({ variant, title }: HeaderProps) => {
     case 'text-close':
       return (
         <HeaderInner
-          left={<span className="heading-4-medium">{title}</span>}
+          left={<span className="heading-20 text-black">{title}</span>}
           right={<CloseButton onClick={() => navigate(-1)} />}
         />
       );

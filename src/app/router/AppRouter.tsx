@@ -1,13 +1,11 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import HomePage from '@/page/home/HomePage';
-import TestPage from '@/page/test/TestPage';
 
-import Login from '@/page/auth/Login';
-import SignUp from '@/page/auth/SignUp';
+import LoginPage from '@/page/auth/ui/LoginPage';
+import SignUpPage from '@/page/auth/ui/SignUpPage';
 import MakeChallengePage from '@/page/makeChallenge/MakeChallengePage';
 import JoinChallengePage from '@/page/joinChallenge/JoinChallengePage';
-
 
 import App from '../App';
 
@@ -19,25 +17,20 @@ export const AppRouter = () => {
       children: [
         { path: '', element: <HomePage /> },
         {
-          path: 'test',
-          element: <TestPage />,
-        },
-        {
-
           path: 'login',
-          element: <Login />,
+          element: <LoginPage />,
         },
         {
           path: 'signup',
-          element: <SignUp />,
-
+          element: <SignUpPage />,
+        },
+        {
           path: 'make-new-challenge',
           element: <MakeChallengePage />,
         },
         {
           path: 'join-challenge',
           element: <JoinChallengePage />,
-
         },
       ],
     },
