@@ -40,17 +40,13 @@ export const GlobalNavigationBar = () => {
           <button
             key={item.path}
             onClick={() => navigate(item.path)}
-            className="flex flex-col items-center gap-1"
+            className="flex flex-col items-center"
           >
-            <div className="w-8 h-8 flex items-center justify-center">
+            <div className="w-12 h-12 flex items-center justify-center pt-1">
               {selected ? item.iconSelected : item.icon}
             </div>
 
-            <span
-              className={`text-xs ${selected ? 'text-black font-semibold' : 'text-neutral-400'}`}
-            >
-              {item.label}
-            </span>
+            {!selected && <span className="text-[#9C9EA3] text-[10px] pb-1">{item.label}</span>}
           </button>
         );
       })}
