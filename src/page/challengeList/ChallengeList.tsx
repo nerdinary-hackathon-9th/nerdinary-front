@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react';
 import SearchFilterBar from '@/components/ui/SearchFilterBar';
 import ChallengeCard from '@/components/ui/ChallengeCard';
 
@@ -46,10 +47,36 @@ const mockData = [
 ];
 
 const ChallengeList = () => {
+  const [searchValue, setSearchValue] = useState('');
+  const [filterValue, setFilterValue] = useState('new');
+
+  const filteredData = useMemo(() => {
+    let result = [...mockData];
+
+    if (searchValue) {
+      result = result.filter((item) =>
+        item.title.toLowerCase().includes(searchValue.toLowerCase()),
+      );
+    }
+
+    if (filterValue === 'new') {
+      result.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+    } else if (filterValue === 'popular') {
+      result.sort((a, b) => b.participant - a.participant);
+    }
+
+    return result;
+  }, [searchValue, filterValue]);
+
   return (
     <div className="pb-5 w-full flex flex-col gap-3 items-center overflow-y-scroll">
-      <SearchFilterBar />
-      {mockData.map((item, idx) => (
+      <SearchFilterBar
+        searchValue={searchValue}
+        onSearchChange={setSearchValue}
+        filterValue={filterValue}
+        onFilterChange={setFilterValue}
+      />
+      {filteredData.map((item, idx) => (
         <ChallengeCard key={idx} {...item} />
       ))}
     </div>
