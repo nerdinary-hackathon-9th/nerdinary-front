@@ -1,12 +1,33 @@
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { Header } from '@/app/layout/header/ui/Header';
 import { GlobalNavigationBar } from '@/app/layout/navigation/GlobalNavigationBar';
+import { challengeGet } from '@/api/challenge/challenge-get';
 
 import { HotChallenges } from './components/HotChallenges';
 import { ProgressChallenges } from './components/ProgressChallenges';
 
 const HomePage = () => {
   const navigate = useNavigate();
+
+  const [hotItems, setHotItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchHot = async () => {
+      try {
+        const res = await challengeGet.getHotChallenge();
+        setHotItems(res.data); // ← API 응답 배열
+      } catch (err) {
+        console.error('핫 챌린지 불러오기 실패:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHot();
+  }, []);
+
   return (
     <div className="min-h-screen">
       <Header variant="logo" />
@@ -21,8 +42,8 @@ const HomePage = () => {
 
         <div className="w-screen overflow-x-auto">
           <HotChallenges
-            items={mockHotChallengeData}
-            onClickItem={(id) => console.log('clicked', id)}
+            items={hotItems}
+            onClickItem={(id) => navigate(`/challenge-detail/${id}`)}
           />
 
           <ProgressChallenges items={mockHotChallengeData} />

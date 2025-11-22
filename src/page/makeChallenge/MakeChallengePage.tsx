@@ -1,17 +1,35 @@
 import { useState } from 'react';
 import { Header } from '@/app/layout/header/ui/Header';
 import { sanitizeInput } from '@/utils/sanitizeInput';
+import { imagePost } from '@/api/image/image-post';
+import { challengePost } from '@/api/challenge/challenge-post';
+import { toast } from 'sonner';
 
 import { UploadImageSection } from './components/UploadImageSection';
 import { CalendarBottomSheet } from './components/CalendarBottomSheet';
 import { DateProvider } from './context/DateProvider';
 import { useDate } from './context/DateProvider';
 import { DateInputBox } from './components/DateInputBox';
+import { useNavigate } from 'react-router-dom';
+
+const toSeoulUTCString = (dateStr: string): string => {
+  const [year, month, day] = dateStr.split('-').map(Number);
+
+  // 한국 시간의 자정
+  const localDate = new Date(year, month - 1, day, 0, 0, 0);
+
+  // 한국(UTC+9) → UTC 변환
+  return new Date(localDate.getTime() - 9 * 60 * 60 * 1000).toISOString();
+};
 
 const MakeChallengePageInner = () => {
+  const navigate = useNavigate();
+
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const { startDate, endDate, setStartDate, setEndDate } = useDate();
 
@@ -25,13 +43,48 @@ const MakeChallengePageInner = () => {
     startDate &&
     endDate;
 
-  const handleSubmit = () => {
-    console.log('제목:', title);
+  const handleImageChange = async (file: File | null) => {
+    setImageFile(file);
+    if (!file) return;
 
-    console.log('내용:', content);
-    console.log('압축된 이미지 파일:', imageFile);
+    try {
+      setIsUploading(true);
+      const res = await imagePost.uploadImage(file);
+      setThumbnailUrl(res.data.imageUrl);
+    } catch (err) {
+      console.error('이미지 업로드 실패:', err);
+      setThumbnailUrl(null);
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
-    alert('제출됨! (콘솔 확인)');
+  const handleSubmit = async () => {
+    if (!isFilled || !thumbnailUrl) return;
+
+    try {
+      // endDate → ISO UTC 변환
+      const endAtUTC = toSeoulUTCString(endDate);
+
+      const res = await challengePost.makeChallenge({
+        title,
+        context: content,
+        endAt: endAtUTC,
+        thumbnailUrl,
+      });
+
+      console.log('챌린지 생성 성공:', res);
+
+      toast.success('챌린지 생성 완료! 🎉');
+
+      setTimeout(() => {
+        navigate('/');
+      }, 700);
+    } catch (err) {
+      console.error('챌린지 생성 실패:', err);
+
+      toast.error('생성 중 오류가 발생했습니다. 다시 시도해주세요.');
+    }
   };
 
   return (
@@ -53,17 +106,12 @@ const MakeChallengePageInner = () => {
         </div>
 
         {/* 2. 이미지 */}
-        <UploadImageSection onChange={setImageFile} />
+        <UploadImageSection onChange={handleImageChange} />
 
         <div>
           <p className="w-full flex-1 text-sihang-neutral-700 body-14 mt-6 mb-3">날짜</p>
           <div className="flex flex-row w-full flex-1 gap-4">
-            <DateInputBox
-              label="시작일"
-              value={startDate}
-              placeholder="시작일"
-              onClick={() => setStartSheetOpen(true)}
-            />
+            <DateInputBox label="시작일" value={startDate} placeholder="시작일" />
 
             <DateInputBox
               label="종료일"
