@@ -62,14 +62,14 @@ export const HotBadge = () => {
   return (
     <div
       className="
-        inline-flex rounded-[9px] p-[1px]
+        inline-flex rounded-[9px] p-px
         bg-[linear-gradient(to_right,#5EBEF8,#FFA873)]
         mb-1
       "
     >
       <div
         className="
-          px-2 py-1 rounded-[8px]
+          px-2 py-1 rounded-xl
           bg-white 
           text-[10px] leading-[140%] font-normal 
           text-[#5EBEF8] 

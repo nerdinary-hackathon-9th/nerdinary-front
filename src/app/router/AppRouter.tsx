@@ -9,6 +9,7 @@ import ChallengeDetailPage from '@/page/challengeDetail/ChallengeDetailPage';
 import MyPage from '@/page/mypage/MyPage';
 
 import App from '../App';
+import ChallengeList from '@/page/challengeList/ChallengeList';
 
 export const AppRouter = () => {
   const router = createBrowserRouter([
