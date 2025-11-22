@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react';
 import { compressImage } from '@/utils/compressImage';
 
+import CameraIcon from '@/assets/smallCameraIcon.svg?react';
+
 interface UploadImageSectionProps {
   onChange: (file: File | null) => void;
 }
@@ -8,7 +10,7 @@ interface UploadImageSectionProps {
 export const UploadImageSection = ({ onChange }: UploadImageSectionProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [isCompressing, setIsCompressing] = useState(false);
+  const [, setIsCompressing] = useState(false);
 
   /** input 클릭 트리거 */
   const handleClick = () => fileInputRef.current?.click();
@@ -37,17 +39,17 @@ export const UploadImageSection = ({ onChange }: UploadImageSectionProps) => {
   };
 
   return (
-    <div className="mb-6">
-      <p className="font-semibold mb-2">2. 이미지</p>
+    <div className="mt-6">
+      <p className="body-14 #525458 mb-3">이미지</p>
 
       <div
-        className="w-28 h-28 border border-dashed border-gray-600 flex items-center justify-center cursor-pointer bg-white"
+        className="w-28 h-28  flex items-center rounded-xl justify-center cursor-pointer bg-[#F3F3F5]"
         onClick={handleClick}
       >
         {preview ? (
-          <img src={preview} className="w-full h-full object-cover rounded" />
+          <img src={preview} className="w-full h-full object-cover rounded " />
         ) : (
-          <span className="text-gray-600 text-xl">⬆</span>
+          <CameraIcon />
         )}
       </div>
 
@@ -58,8 +60,6 @@ export const UploadImageSection = ({ onChange }: UploadImageSectionProps) => {
         className="hidden"
         onChange={handleChange}
       />
-
-      {isCompressing && <p className="text-sm mt-2 text-gray-700">이미지 압축중...</p>}
     </div>
   );
 };
