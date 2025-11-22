@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import SearchIcon from '@/assets/search.svg?react';
 import LogoIcon from '@/assets/searchBarLogo.svg?react';
 import SelectDropdown, { type SelectOption } from './SelectDropdown';
@@ -23,7 +24,7 @@ const SearchFilterBar = ({
   onFilterChange,
 }: SearchFilterBarProps) => {
   return (
-    <div className="w-5/6 flex items-center gap-1 py-3 ">
+    <div className="w-full flex items-center gap-4 py-3 ">
       {/* 검색 창 */}
       <div className="flex-1 relative">
         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 ">
@@ -34,7 +35,7 @@ const SearchFilterBar = ({
           placeholder="검색어를 입력해 주세요"
           value={searchValue}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full h-10 py-2 pl-10 pr-3 bg-sihang-primary-10 text-sm placeholder:text-sihang-neutral-400 rounded-full shadow-md focus:outline-none focus:border-sihang"
+          className="w-full h-10 py-2 pl-10 pr-3 bg-sihang-primary-10 text-sm placeholder:text-sihang-neutral-400 rounded-full shadow-md focus:outline-none"
         />
         {/* 메뉴 아이콘 */}
         <LogoIcon className="absolute top-1.5 right-2 " />
