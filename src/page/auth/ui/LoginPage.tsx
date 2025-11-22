@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { userPost } from '@/api/user/user-post';
 import { AuthInput } from '../components/AuthInput';
 import { nicknameRegex, passwordRegex } from '../utils/regex';
 
@@ -25,10 +25,21 @@ const LoginPage = () => {
 
   const isValid = nicknameRegex.test(form.nickname) && passwordRegex.test(form.password);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!isValid) return;
-    alert('로그인 성공!');
-    navigate('/');
+
+    try {
+      const res = await userPost.login(form.nickname, form.password);
+
+      // 응답 꺼내기
+      const userId = res.data.id;
+
+      // 로컬스토리지 저장
+      localStorage.setItem('userId', String(userId));
+      navigate('/');
+    } catch {
+      alert('로그인 실패');
+    }
   };
 
   return (

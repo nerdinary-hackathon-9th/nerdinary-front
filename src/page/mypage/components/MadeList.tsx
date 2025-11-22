@@ -8,7 +8,7 @@ export const MadeList = () => {
         startDate="2025-10-01"
         endDate="2025-10-15"
         image="/public/example.png"
-        content="내용내용"
+        content="ㅋㅇㄹㅇㄹㄹㅇㄴㄹㅇㄴㅍㅇㄴ"
       />
     </div>
   );
