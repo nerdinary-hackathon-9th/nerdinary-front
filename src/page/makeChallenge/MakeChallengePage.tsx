@@ -3,21 +3,23 @@ import { Header } from '@/app/layout/header/ui/Header';
 import { sanitizeInput } from '@/utils/sanitizeInput';
 
 import { UploadImageSection } from './components/UploadImageSection';
+import { CalendarBottomSheet } from './components/CalendarBottomSheet';
+import { DateProvider } from './context/DateProvider';
+import { useDate } from './context/DateProvider';
 
-const MakeChallengePage = () => {
+const MakeChallengePageInner = () => {
   const [title, setTitle] = useState('');
-  const [date, setDate] = useState('');
   const [content, setContent] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
 
-  const handleSubmit = () => {
-    if (!title || !date || !content) {
-      alert('모든 내용을 입력해 주세요.');
-      return;
-    }
+  const { startDate, endDate, setStartDate, setEndDate } = useDate();
 
+  const [isStartSheetOpen, setStartSheetOpen] = useState(false);
+  const [isEndSheeetOpen, setEndSheetOpen] = useState(false);
+
+  const handleSubmit = () => {
     console.log('제목:', title);
-    console.log('날짜:', date);
+
     console.log('내용:', content);
     console.log('압축된 이미지 파일:', imageFile);
 
@@ -44,15 +46,18 @@ const MakeChallengePage = () => {
         {/* 2. 이미지 */}
         <UploadImageSection onChange={setImageFile} />
 
-        {/* 3. 날짜 */}
-        <div className="mb-6">
-          <p className="font-semibold mb-2">3. 날짜</p>
-          <input
-            type="date"
-            value={date}
-            className="w-full px-3 py-2 border rounded bg-white"
-            onChange={(e) => setDate(e.target.value)}
-          />
+        <div
+          className="w-full px-3 py-2 border rounded bg-white mt-6 cursor-pointer"
+          onClick={() => setStartSheetOpen(true)}
+        >
+          {startDate || '시작일'}
+        </div>
+
+        <div
+          className="w-full px-3 py-2 border rounded bg-white mt-6 cursor-pointer"
+          onClick={() => setEndSheetOpen(true)}
+        >
+          {endDate || '종료일'}
         </div>
 
         {/* 4. 내용 */}
@@ -74,7 +79,28 @@ const MakeChallengePage = () => {
           생성하기
         </button>
       </div>
+
+      <CalendarBottomSheet
+        open={isStartSheetOpen}
+        onOpenChange={setStartSheetOpen}
+        onSelectDate={(d) => setStartDate(d)}
+      />
+
+      <CalendarBottomSheet
+
+        open={isEndSheeetOpen}
+        onOpenChange={setEndSheetOpen}
+        onSelectDate={(d) => setEndDate(d)}
+      />
     </div>
+  );
+};
+
+const MakeChallengePage = () => {
+  return (
+    <DateProvider>
+      <MakeChallengePageInner />
+    </DateProvider>
   );
 };
 
