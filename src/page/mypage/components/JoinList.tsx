@@ -9,6 +9,7 @@ export const JoinList = () => {
         endDate="2025-10-15"
         image="/public/example.png"
         content="내용내용"
+        participant={10}
       />
     </div>
   );

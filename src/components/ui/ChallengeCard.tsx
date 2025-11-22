@@ -37,7 +37,7 @@ const ChallengeCard = ({
   const start = new Date(startDate);
   start.setHours(0, 0, 0, 0);
 
-  if (start.getTime() === today.getTime()) {
+  if (start.getTime() >= today.getTime()) {
     conditionalTags.push('NEW');
   }
 
