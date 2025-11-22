@@ -45,19 +45,24 @@ export const snapPost = {
   }): Promise<MakeSnapResponseDTO> => {
     const formData = new FormData();
 
-    formData.append('title', title);
-    formData.append('content', content);
+    // (1) data 객체를 JSON 문자열로 넣기
+    const jsonBody = JSON.stringify({
+      title,
+      content,
+    });
+    formData.append('data', jsonBody);
+
+    // (2) 파일 form-data 파트
     if (file) {
-      formData.append('snap', file);
+      formData.append('images', file);
     }
 
+    // (3) multipart 전송 (Content-Type 강제 지정하면 안 됨)
     return apiVer2
       .post(`api/snap/${challengeId}/${userId}`, {
         body: formData,
         headers: {
-          // multipart는 Content-Type 넣으면 절대 안 됨
-          // ky 기본 헤더를 덮어쓰기 위해 null 혹은 undefined 사용
-          'Content-Type': undefined,
+          'Content-Type': undefined, // ky 기본 application/json 무효화
         },
       })
       .json<MakeSnapResponseDTO>();
