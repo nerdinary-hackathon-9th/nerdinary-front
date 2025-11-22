@@ -1,7 +1,7 @@
 ---
-name: "[Feat/Refactor] 이슈 이름"
+name: Issue Template
 about: Suggest an idea for this project
-title: ''
+title: "[FEAT/FIX/REFACTOR/CHORE] 이슈 이름"
 labels: ''
 assignees: ''
 
