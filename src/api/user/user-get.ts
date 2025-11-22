@@ -11,6 +11,9 @@ export interface Challenge {
   createdAt: string;
   endAt: string;
   thumbnailUrl: string;
+  _count: {
+    participants: number;
+  };
 }
 
 export interface ParticipatingChallengeResponse {
@@ -43,8 +46,11 @@ export const userGet = {
   },
 
   //   닉네임 중복확인
-  checkNickName: async ({ nickname }: { nickname: string }) => {
-    const response = await api.get(`api/user/${nickname}`).json<CheckNickNameResponseDTO>();
+  checkNickName: async (nickname: string) => {
+    const response = (
+      await api.get(`api/user/check`, { searchParams: { nickname } }).json
+    )<CheckNickNameResponseDTO>();
+
     return response;
   },
 };

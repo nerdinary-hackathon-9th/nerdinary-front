@@ -1,16 +1,51 @@
+import { useState } from 'react';
 import { ChallengeCardAtMyPage } from './ChallengeCardAtMyPage';
+import { userGet } from '@/api/user/user-get';
 
 export const JoinList = () => {
+  const [list, setList] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const userId = Number(localStorage.getItem('userId'));
+    if (!userId) return;
+
+    const fetchData = async () => {
+      try {
+        const res = await userGet.getParticipatingChallenges({ userId });
+
+        // 백엔드 구조:
+        // res.data.userChallenges.participants : Challenge[]
+        const challenges = res.data.userChallenges.participants;
+        setList(challenges);
+      } catch (err) {
+        console.error('참여중인 챌린지 조회 실패', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <p className="p-5 text-sm text-gray-500">불러오는 중…</p>;
+
+  if (list.length === 0)
+    return <p className="p-5 text-sm text-gray-400">참여중인 낭낭이 없습니다!</p>;
+  
   return (
-    <div>
-      <ChallengeCardAtMyPage
-        title="제목"
-        startDate="2025-10-01"
-        endDate="2025-10-15"
-        image="/public/example.png"
-        content="내용내용"
-        participant={10}
-      />
+    <div className="flex flex-col gap-4">
+      {list.map((item) => (
+        <ChallengeCardAtMyPage
+          key={item.id}
+          title={item.title}
+          startDate={item.createdAt}
+          endDate={item.endAt}
+          image={item.thumbnailUrl}
+          content={item.context}
+          participant={item._count.participants}
+        />
+      ))}
     </div>
   );
 };
