@@ -39,7 +39,7 @@ const JoinChallengePage = () => {
       <div className="px-5 flex flex-col">
         {/* 챌린지 타이틀 */}
         <div className="py-4">
-          <h2 className="heading-18 mb-2">TITLE</h2>
+          <h2 className="heading-18 text=[#212223] mb-2">TITLE</h2>
           <p className="body-14 text-sihang-neutral-400">
             <div className="flex flex-row items-center gap-1">
               <CalendarIcon /> DATE
