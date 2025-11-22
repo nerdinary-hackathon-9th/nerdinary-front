@@ -69,17 +69,19 @@ const ChallengeList = () => {
   }, [searchValue, filterValue]);
 
   return (
-    <div className="pb-5 w-full flex flex-col gap-3 items-center overflow-y-scroll">
-      <SearchFilterBar
-        searchValue={searchValue}
-        onSearchChange={setSearchValue}
-        filterValue={filterValue}
-        onFilterChange={setFilterValue}
-      />
-      {filteredData.map((item, idx) => (
-        <ChallengeCard key={idx} {...item} />
-      ))}
-    </div>
+    <>
+      <div className="pb-20 w-full flex flex-col gap-3 items-center overflow-y-scroll">
+        <SearchFilterBar
+          searchValue={searchValue}
+          onSearchChange={setSearchValue}
+          filterValue={filterValue}
+          onFilterChange={setFilterValue}
+        />
+        {filteredData.map((item, idx) => (
+          <ChallengeCard key={idx} {...item} />
+        ))}
+      </div>
+    </>
   );
 };
 export default ChallengeList;
