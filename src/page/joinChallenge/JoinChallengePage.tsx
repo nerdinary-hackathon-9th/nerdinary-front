@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { Header } from '@/app/layout/header/ui/Header';
 import { compressImage } from '@/utils/compressImage';
 import CalendarIcon from '@/assets/grayCalendar.svg?react';
 import InfoIcon from '@/assets/grayInfoIcon.svg?react';
 import CameraIcon from '@/assets/grayCameraIcon.svg?react';
-import { imagePost } from '@/api/image/image-post';
+import { snapPost } from '@/api/snap/snap-post';
 
 const formatDotDateKorea = (iso: string) => {
   const date = new Date(iso);
@@ -15,11 +15,13 @@ const formatDotDateKorea = (iso: string) => {
 };
 
 const JoinChallengePage = () => {
+  const { id } = useParams();
+  const challengeId = Number(id);
+
   const { state } = useLocation();
 
   const [content, setContent] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null); // 압축된 File
-  const [imageUrl, setImageUrl] = useState<string | null>(null); // 업로드 후 URL
   const [, setIsUploading] = useState(false);
 
   const title = state?.title;
@@ -33,29 +35,35 @@ const JoinChallengePage = () => {
 
     try {
       setIsUploading(true);
-
       const compressed = await compressImage(file);
       setImageFile(compressed);
-
-      const res = await imagePost.uploadImage(compressed);
-
-      setImageUrl(res.data.imageUrl);
-
-      console.log('업로드 성공:', res.data.imageUrl);
     } catch (err) {
-      console.error('이미지 업로드 실패:', err);
-      setImageUrl(null);
+      console.error('이미지 압축 실패:', err);
+      setImageFile(null);
     } finally {
       setIsUploading(false);
     }
   };
+  console.log(challengeId);
+  const handleSubmit = async () => {
+    if (!imageFile || !content) return;
+    try {
+      const userId = Number(localStorage.getItem('userId'));
 
-  const handleSubmit = () => {
-    console.log({
-      content,
-      imageUrl,
-    });
-    alert('참여 완료!');
+      const res = await snapPost.makeSnap({
+        challengeId,
+        userId,
+        title: '인증샷',
+        content,
+        file: imageFile, // 파일 그대로 전송
+      });
+
+      console.log('스냅 생성 성공:', res);
+      alert('참여 완료!');
+    } catch (err) {
+      console.error('스냅 생성 실패:', err);
+      alert('오류가 발생했습니다.');
+    }
   };
 
   return (
@@ -67,8 +75,8 @@ const JoinChallengePage = () => {
       <div className="w-full px-4 py-3 bg-linear-to-r from-sihang-primary-300 to-sihang-secondary-500 text-white text-sm">
         지금 {participantsCount}명이 챌린지에 참여중이에요!
         <br />
-        <span className="text-sihang-primary-900">{participantsCount + 1}번째</span>{' '}
-        참여자가 되어주시겠어요?
+        <span className="text-sihang-primary-900">{participantsCount + 1}번째</span> 참여자가
+        되어주시겠어요?
       </div>
       {/* 메인 컨텐츠 */}
       <div className="px-5 flex flex-col">
@@ -147,7 +155,7 @@ const JoinChallengePage = () => {
       {/* 완료 버튼 */}
       <div className="mt-auto mb-4">
         <button
-          disabled={!imageUrl || !content}
+          disabled={!imageFile || !content}
           onClick={handleSubmit}
           className="fixed bottom-4 inset-x-4 h-14 py-3 rounded-xl bg-blue-400 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
         >

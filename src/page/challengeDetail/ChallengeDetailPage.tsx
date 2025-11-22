@@ -7,6 +7,7 @@ import CalendarIcon from '@/assets/calendar.svg?react';
 import PeopleIcon from '@/assets/people.svg?react';
 import DotIcon from '@/assets/dot.svg?react';
 import { SnapGrid } from './components/SnapGrid';
+import { snapGet } from '@/api/snap/snap-get';
 
 export interface ChallengeReseponse {
   id: number;
@@ -25,20 +26,30 @@ const formatDotDateKorea = (iso: string) => {
   return korea.toISOString().slice(0, 10).replace(/-/g, '.');
 };
 
+export interface ChallengeSnapItem {
+  imageUrl: string;
+}
+
 const ChallengeDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [challenge, setChallenge] = useState<ChallengeReseponse | null>(null);
   const [, setLoading] = useState(true);
+  const [snaps, setSnaps] = useState<ChallengeSnapItem[]>([]);
 
   useEffect(() => {
     if (!id) return;
 
     const fetchData = async () => {
       try {
-        const res = await challengeGet.getChallengeInfo(Number(id));
-        setChallenge(res.data);
+        // 챌린지 정보
+        const challengeRes = await challengeGet.getChallengeInfo(Number(id));
+        setChallenge(challengeRes.data);
+
+        // 스냅 정보
+        const snapRes = await snapGet.getAllSnapsInChallenge({ challengeId: Number(id) });
+        setSnaps(snapRes.data);
       } catch (err) {
         console.error('챌린지 상세 조회 실패:', err);
       } finally {
@@ -90,11 +101,10 @@ const ChallengeDetailPage = () => {
           <h2 className="body-14 mb-3 text-[#686B70]">챌린지 인증내용</h2>
 
           <SnapGrid>
-            {Array.from({ length: 10 }).map((_, i) => (
-              <div
-                className="bg-neutral-100 border-neutral-100 border rounded-lg h-28"
-                key={i}
-              ></div>
+            {snaps.map((snap, id) => (
+              <div key={id} className="rounded-lg overflow-hidden">
+                <img src={snap.imageUrl} className="w-full h-28 object-cover" alt="snap image" />
+              </div>
             ))}
           </SnapGrid>
         </section>
@@ -110,7 +120,7 @@ const ChallengeDetailPage = () => {
                 title: challenge.title,
                 createdAt: challenge.createdAt,
                 endAt: challenge.endAt,
-                participantsCount: challenge.participantsCount
+                participantsCount: challenge.participantsCount,
               },
             })
           }

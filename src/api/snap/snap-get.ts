@@ -18,7 +18,6 @@ export interface SnapResponse {
 }
 
 export interface ChallengeSnapItem {
-  id: number;
   imageUrl: string;
 }
 
@@ -40,6 +39,6 @@ export const snapGet = {
   }: {
     challengeId: number;
   }): Promise<AllSnapInChallengeResponseDTO> => {
-    return api.get(`challenge/${challengeId}/snaps`).json<AllSnapInChallengeResponseDTO>();
+    return api.get(`api/snap/challenge/${challengeId}`).json<AllSnapInChallengeResponseDTO>();
   },
 };
