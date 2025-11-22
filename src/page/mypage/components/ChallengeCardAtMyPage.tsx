@@ -1,25 +1,36 @@
 import CalendarIcon from '@/assets/grayCalendar.svg?react';
 import RightArrow from '@/assets/Arrows-chevron/Icon.svg?react';
 
-interface ChallengeCardProps {
+interface ChallengeCardAtMyPageProps {
   title: string;
   startDate: string;
   endDate: string;
   image: string;
   content: string;
-  popular?: boolean;
+  participant: number;
   onClick?: () => void;
 }
 
-export const ChallengeCard = ({
+export const ChallengeCardAtMyPage = ({
   title,
   startDate,
   endDate,
   image,
   content,
-  popular = true,
+  participant,
   onClick,
-}: ChallengeCardProps) => {
+}: ChallengeCardAtMyPageProps) => {
+  const isHot = participant >= 100;
+
+  // NEW 기준 (startDate가 오늘과 동일)
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const start = new Date(startDate);
+  start.setHours(0, 0, 0, 0);
+
+  const isNew = start.getTime() >= today.getTime();
+
   return (
     <div
       onClick={onClick}
@@ -30,7 +41,10 @@ export const ChallengeCard = ({
     >
       {/* TOP: Title + Arrow */}
       <div className="flex-1 items-start justify-between mb-2">
-        {popular && <HotBadge />}
+        <div className="flex gap-1 mb-1">
+          {isHot && <HotBadge />}
+          {isNew && <NewBadge />}
+        </div>
         <div className="flex flex-col gap-1">
           <div className="flex items-center justify-between gap-2">
             <p className="text-[18px] font-semibold text-neutral-900">{title}</p>
@@ -69,7 +83,30 @@ export const HotBadge = () => {
     >
       <div
         className="
-          px-2 py-1 rounded-xl
+          px-2 py-1 rounded-md
+          bg-white 
+          text-[10px] leading-[140%] font-normal 
+          text-[#5EBEF8] 
+        "
+      >
+        HOT
+      </div>
+    </div>
+  );
+};
+
+export const NewBadge = () => {
+  return (
+    <div
+      className="
+        inline-flex rounded-[9px] p-px
+        bg-[linear-gradient(to_right,#5EBEF8,#FFA873)]
+        mb-1
+      "
+    >
+      <div
+        className="
+          px-2 py-1 rounded-md
           bg-white 
           text-[10px] leading-[140%] font-normal 
           text-[#5EBEF8] 

@@ -13,7 +13,7 @@ export const GlobalNavigationBar = () => {
   const items = [
     {
       label: '리스트',
-      path: '/list',
+      path: '/challenge-list',
       icon: <List />,
       iconSelected: <ListSelected />,
     },

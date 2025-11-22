@@ -37,7 +37,7 @@ const ChallengeCard = ({
   const start = new Date(startDate);
   start.setHours(0, 0, 0, 0);
 
-  if (start.getTime() === today.getTime()) {
+  if (start.getTime() >= today.getTime()) {
     conditionalTags.push('NEW');
   }
 
@@ -50,7 +50,7 @@ const ChallengeCard = ({
   return (
     <div
       onClick={handleClick}
-      className="w-5/6 h-fit flex p-5 gap-4 shadow-xs rounded-[12px] border transition-all duration-200 ease-out cursor-pointer hover:scale-105 active:scale-[1.05]"
+      className="w-full flex p-4 gap-4 shadow-xs rounded-[12px] border transition-all duration-200 ease-out cursor-pointer hover:scale-105 active:scale-[1.05]"
     >
       <div>
         <div
@@ -59,9 +59,9 @@ const ChallengeCard = ({
           <img src={imgSrc} />
         </div>
       </div>
-      <div className="py-0.5 flex flex-col gap-1">
+      <div className="flex flex-col gap-1">
         {allTags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap">
             {allTags.map((tag) => (
               <span
                 key={tag}

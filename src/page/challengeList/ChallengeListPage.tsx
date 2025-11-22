@@ -48,7 +48,7 @@ const mockData = [
   },
 ];
 
-const ChallengeList = () => {
+const ChallengeListPage = () => {
   const [searchValue, setSearchValue] = useState('');
   const [filterValue, setFilterValue] = useState('new');
 
@@ -71,22 +71,23 @@ const ChallengeList = () => {
   }, [searchValue, filterValue]);
 
   return (
-    <>
-      <Header variant="back-text" title="낭비 할 일 리스트" />
+    <div>
+      <Header variant="text" title="낭낭 리스트" />
 
-      <div className="pb-20 w-full flex flex-col gap-3 items-center overflow-y-scroll">
+      <div className="pb-20 px-5 w-full flex flex-col gap-3 items-center overflow-y-scroll">
         <SearchFilterBar
           searchValue={searchValue}
           onSearchChange={setSearchValue}
           filterValue={filterValue}
           onFilterChange={setFilterValue}
         />
+
         {filteredData.map((item, idx) => (
           <ChallengeCard key={idx} {...item} />
         ))}
       </div>
       <GlobalNavigationBar />
-    </>
+    </div>
   );
 };
-export default ChallengeList;
+export default ChallengeListPage;
