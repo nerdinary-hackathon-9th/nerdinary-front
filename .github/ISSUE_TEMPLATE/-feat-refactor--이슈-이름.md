@@ -1,5 +1,5 @@
 ---
-name: Feature request
+name: "[Feat/Refactor] 이슈 이름"
 about: Suggest an idea for this project
 title: ''
 labels: ''
