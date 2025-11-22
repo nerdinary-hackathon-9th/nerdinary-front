@@ -10,8 +10,6 @@ const WasteList = () => {
       <WasteCard />
       <WasteCard />
       <WasteCard />
-      <WasteCard />
-      <WasteCard />
     </div>
   );
 };

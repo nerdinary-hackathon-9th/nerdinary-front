@@ -9,6 +9,7 @@ import JoinChallengePage from '@/page/joinChallenge/JoinChallengePage';
 import ChallengeDetailPage from '@/page/challenge/ChallengeDetail';
 
 import App from '../App';
+import WasteList from '@/page/challengeList/WasteList';
 
 export const AppRouter = () => {
   const router = createBrowserRouter([
@@ -37,6 +38,10 @@ export const AppRouter = () => {
           // Todo : api endpoint에 맞춰 path 수정해야 함!
           path: 'challenge',
           element: <ChallengeDetailPage />,
+        },
+        {
+          path: 'challenge-list',
+          element: <WasteList />,
         },
       ],
     },
