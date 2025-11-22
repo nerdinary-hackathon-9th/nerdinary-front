@@ -7,7 +7,7 @@ interface ChallengeCardAtMyPageProps {
   endDate: string;
   image: string;
   content: string;
-  participant: number;
+  participant?: number;
   onClick?: () => void;
 }
 
@@ -17,7 +17,7 @@ export const ChallengeCardAtMyPage = ({
   endDate,
   image,
   content,
-  participant,
+  participant = 0,
   onClick,
 }: ChallengeCardAtMyPageProps) => {
   const isHot = participant >= 100;
