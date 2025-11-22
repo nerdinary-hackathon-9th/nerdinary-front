@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Header } from '@/app/layout/header/ui/Header';
+import { sanitizeInput } from '@/utils/sanitizeInput';
 
 import { UploadImageSection } from './components/UploadImageSection';
 
@@ -35,7 +36,7 @@ const MakeNewChorePage = () => {
             type="text"
             value={title}
             placeholder="제목을 입력하세요"
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => setTitle(sanitizeInput(e.target.value))}
             className="w-full px-3 py-2 border rounded bg-white"
           />
         </div>
@@ -62,7 +63,7 @@ const MakeNewChorePage = () => {
             rows={5}
             placeholder="내용을 입력하세요"
             className="w-full px-3 py-2 border rounded bg-white resize-none"
-            onChange={(e) => setContent(e.target.value)}
+            onChange={(e) => setContent(sanitizeInput(e.target.value))}
           />
         </div>
 
