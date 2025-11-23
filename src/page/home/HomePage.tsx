@@ -51,7 +51,10 @@ const HomePage = () => {
             onClickItem={(id) => navigate(`/challenge-detail/${id}`)}
           />
 
-          <ProgressChallenges items={todayItems} />
+          <ProgressChallenges
+            items={todayItems}
+            onClickItem={(id) => navigate(`/challenge-detail/${id}`)}
+          />
         </div>
       </div>
 

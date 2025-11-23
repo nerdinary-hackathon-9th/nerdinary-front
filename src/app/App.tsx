@@ -1,9 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { Toaster } from 'sonner';
 
 function App() {
-  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userId = localStorage.getItem('userId');
@@ -11,7 +12,7 @@ function App() {
     const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
 
     if (!userId && !isAuthPage) {
-      window.location.replace('/login');
+      navigate('/login');
     }
   }, [location.pathname]);
 

@@ -14,9 +14,9 @@ export const JoinList = () => {
       try {
         const res = await userGet.getParticipatingChallenges({ userId });
 
-        // 백엔드 구조:
-        // res.data.userChallenges.participants : Challenge[]
-        const challenges = res.data.userChallenges.participants;
+        const challenges =
+          res.data.userChallenges?.participants?.map((p: any) => p.challenge) ?? [];
+
         setList(challenges);
       } catch (err) {
         console.error('참여중인 챌린지 조회 실패', err);

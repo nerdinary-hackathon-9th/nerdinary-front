@@ -10,7 +10,28 @@ import CalendarIcon from '@/assets/calendar.svg?react';
 import PeopleIcon from '@/assets/people.svg?react';
 import DotIcon from '@/assets/dot.svg?react';
 import { SnapGrid } from './components/SnapGrid';
-import { formatDateKo } from '@/utils/dateFormat';
+import { snapGet } from '@/api/snap/snap-get';
+
+export interface ChallengeReseponse {
+  id: number;
+  title: string;
+  context: string;
+  createdAt: string;
+  endAt: string;
+  thumbnailUrl: string;
+  participantsCount: number;
+}
+
+const formatDotDateKorea = (iso: string) => {
+  const date = new Date(iso);
+  const korea = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+
+  return korea.toISOString().slice(0, 10).replace(/-/g, '.');
+};
+
+export interface ChallengeSnapItem {
+  imageUrl: string;
+}
 
 const ChallengeDetailPage = () => {
   const { id } = useParams();
@@ -63,7 +84,7 @@ const ChallengeDetailPage = () => {
       {/* Scrollable Content */}
       <main className="flex-1 overflow-y-auto pb-28">
         {/* Image */}
-        <img src={challenge.thumbnailUrl} className="w-full h-60 object-cover" alt="challenge" />
+        <img src="/example.png" className="w-full h-60 object-cover" alt="challenge" />
 
         {/* Title */}
         <div className="px-5 py-4 text-center">
@@ -73,7 +94,7 @@ const ChallengeDetailPage = () => {
               <div className="flex items-center gap-1">
                 <CalendarIcon className="w-4 h-4" />
                 <span className="text-[#B4B5B9]  mr-1">
-                  {formatDateKo(challenge.createdAt)} ~ {formatDateKo(challenge.endAt)}
+                  {formatDotDateKorea(challenge.createdAt)} ~ {formatDotDateKorea(challenge.endAt)}
                 </span>
                 <DotIcon />
               </div>
@@ -116,7 +137,7 @@ const ChallengeDetailPage = () => {
               <div className="col-span-full text-center py-10 text-neutral-400 text-sm">
                 아직 인증 내용이 없습니다.
               </div>
-            )}
+            ))}
           </SnapGrid>
         </section>
       </main>

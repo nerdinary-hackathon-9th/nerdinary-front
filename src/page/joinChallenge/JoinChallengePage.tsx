@@ -10,6 +10,7 @@ import InfoIcon from '@/assets/grayInfoIcon.svg?react';
 import CameraIcon from '@/assets/grayCameraIcon.svg?react';
 
 const formatDotDateKorea = (iso: string) => {
+
   const date = new Date(iso);
   const korea = new Date(date.getTime() + 9 * 60 * 60 * 1000);
 
@@ -17,6 +18,7 @@ const formatDotDateKorea = (iso: string) => {
 };
 
 const JoinChallengePage = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const navigate = useNavigate();
   const challengeId = Number(id);
