@@ -5,6 +5,8 @@ import type {
   ChallengeListParams,
   ChallengeListResponse,
   ChallengeParticipant,
+  JoinChallengeRequest,
+  JoinChallengeResponse,
 } from '@/types/challenge';
 
 export const challengeAPI = {
@@ -31,7 +33,9 @@ export const challengeAPI = {
   },
 
   // 챌린지 상세 조회
-  getDetail: async (id: number): Promise<{ success: boolean; message: string; data: ChallengeDetail }> => {
+  getDetail: async (
+    id: number,
+  ): Promise<{ success: boolean; message: string; data: ChallengeDetail }> => {
     const response = await api
       .get(`api/challenge/${id}`)
       .json<{ success: boolean; message: string; data: ChallengeDetail }>();
@@ -62,6 +66,26 @@ export const challengeAPI = {
     const response = await api
       .get(`api/challenge/${id}/participants`)
       .json<{ success: boolean; message: string; data: ChallengeParticipant[] }>();
+    return response;
+  },
+
+  // 유저의 챌린지 참여 여부 확인
+  checkUserParticipation: async (challengeId: number, userId: number): Promise<boolean> => {
+    try {
+      const response = await challengeAPI.getParticipants(challengeId);
+      const participants = response.data;
+      return participants.some((participant) => participant.userId === userId);
+    } catch (error) {
+      console.error('참여 여부 확인 실패:', error);
+      return false;
+    }
+  },
+
+  // 챌린지 참여하기
+  join: async (data: JoinChallengeRequest): Promise<JoinChallengeResponse> => {
+    const response = await api
+      .post('api/user/challenge', { json: data })
+      .json<JoinChallengeResponse>();
     return response;
   },
 };

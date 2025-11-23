@@ -49,3 +49,23 @@ export interface ChallengeListResponse {
   totalCount?: number;
   currentPage?: number;
 }
+
+// 챌린지 참여 요청
+export interface JoinChallengeRequest {
+  userId: number;
+  challengeId: number;
+}
+
+// 챌린지 참여 응답
+export interface JoinChallengeResponse {
+  success: boolean;
+  message: string;
+  data: {
+    userChallenge: {
+      id: number;
+      createdAt: string;
+      userId: number;
+      challengeId: number;
+    };
+  };
+}

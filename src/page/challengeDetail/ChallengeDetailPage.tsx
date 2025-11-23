@@ -1,7 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { challengeAPI } from '@/api/challenge/challenge';
-import type { ChallengeDetail, ChallengeParticipant } from '@/types/challenge';
+import { snapAPI } from '@/api/snap/snap';
+import type { ChallengeDetail } from '@/types/challenge';
+import type { Snap } from '@/types/snap';
 import { Header } from '@/app/layout/header/ui/Header';
 import SlideButton from '@/components/ui/SlideButton';
 import CalendarIcon from '@/assets/calendar.svg?react';
@@ -14,7 +16,7 @@ const ChallengeDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [challenge, setChallenge] = useState<ChallengeDetail | null>(null);
-  const [participants, setParticipants] = useState<ChallengeParticipant[]>([]);
+  const [snaps, setSnaps] = useState<Snap[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -23,12 +25,12 @@ const ChallengeDetailPage = () => {
 
       setIsLoading(true);
       try {
-        const [detailResponse, participantsResponse] = await Promise.all([
+        const [detailResponse, snapsResponse] = await Promise.all([
           challengeAPI.getDetail(Number(id)),
-          challengeAPI.getParticipants(Number(id)),
+          snapAPI.getSnapsByChallenge(Number(id)),
         ]);
         setChallenge(detailResponse.data);
-        setParticipants(participantsResponse.data);
+        setSnaps(snapsResponse.data);
       } catch (error) {
         console.error('챌린지 정보를 불러오는데 실패했습니다:', error);
       } finally {
@@ -54,34 +56,6 @@ const ChallengeDetailPage = () => {
       </div>
     );
   }
-
-  const [challenge, setChallenge] = useState<ChallengeReseponse | null>(null);
-  const [, setLoading] = useState(true);
-  const [snaps, setSnaps] = useState<ChallengeSnapItem[]>([]);
-
-  useEffect(() => {
-    if (!id) return;
-
-    const fetchData = async () => {
-      try {
-        // 챌린지 정보
-        const challengeRes = await challengeGet.getChallengeInfo(Number(id));
-        setChallenge(challengeRes.data);
-
-        // 스냅 정보
-        const snapRes = await snapGet.getAllSnapsInChallenge({ challengeId: Number(id) });
-        setSnaps(snapRes.data);
-      } catch (err) {
-        console.error('챌린지 상세 조회 실패:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [id]);
-
-  if (!challenge) return;
 
   return (
     <div className="min-h-screen">
@@ -122,25 +96,25 @@ const ChallengeDetailPage = () => {
           <h2 className="body-14 mb-3 text-[#686B70]">챌린지 인증내용</h2>
 
           <SnapGrid>
-            {participants.length > 0 ? (
-              participants.map((participant) => (
+            {snaps.length > 0 ? (
+              snaps.map((snap) => (
                 <div
-                  className="bg-neutral-100 border-neutral-100 border rounded-lg h-28 flex items-center justify-center"
-                  key={participant.id}
+                  className="bg-neutral-100 border-neutral-100 border rounded-lg h-28 overflow-hidden relative"
+                  key={snap.id}
                 >
-                  <div className="text-center">
-                    <div className="text-sm font-medium text-neutral-700">
-                      {participant.user.nickname}
-                    </div>
-                    <div className="text-xs text-neutral-400 mt-1">
-                      {formatDateKo(participant.createdAt)}
-                    </div>
+                  <img
+                    src={snap.imageUrl}
+                    alt={snap.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2">
+                    <div className="text-xs font-medium text-white truncate">{snap.title}</div>
                   </div>
                 </div>
               ))
             ) : (
               <div className="col-span-full text-center py-10 text-neutral-400 text-sm">
-                아직 참가자가 없습니다.
+                아직 인증 내용이 없습니다.
               </div>
             )}
           </SnapGrid>

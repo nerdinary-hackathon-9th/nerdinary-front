@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import { Header } from '@/app/layout/header/ui/Header';
 import { compressImage } from '@/utils/compressImage';
+import { challengeAPI } from '@/api/challenge/challenge';
+import { snapAPI } from '@/api/snap/snap';
+import { toast } from 'sonner';
 import CalendarIcon from '@/assets/grayCalendar.svg?react';
 import InfoIcon from '@/assets/grayInfoIcon.svg?react';
 import CameraIcon from '@/assets/grayCameraIcon.svg?react';
-import { snapPost } from '@/api/snap/snap-post';
 
 const formatDotDateKorea = (iso: string) => {
   const date = new Date(iso);
@@ -16,6 +18,7 @@ const formatDotDateKorea = (iso: string) => {
 
 const JoinChallengePage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const challengeId = Number(id);
 
   const { state } = useLocation();
@@ -23,6 +26,7 @@ const JoinChallengePage = () => {
   const [content, setContent] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null); // 압축된 File
   const [, setIsUploading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const title = state?.title;
   const createdAt = state?.createdAt;
@@ -44,25 +48,37 @@ const JoinChallengePage = () => {
       setIsUploading(false);
     }
   };
-  console.log(challengeId);
   const handleSubmit = async () => {
-    if (!imageFile || !content) return;
-    try {
-      const userId = Number(localStorage.getItem('userId'));
+    if (!imageFile || !content) {
+      toast.error('모든 항목을 입력해주세요.');
+      return;
+    }
 
-      const res = await snapPost.makeSnap({
-        challengeId,
+    setIsSubmitting(true);
+    try {
+      // TODO: 실제 userId는 로그인 정보에서 가져와야 함
+      const userId = Number(localStorage.getItem('userId')) || 1;
+
+      // 챌린지 참여하기
+      await challengeAPI.join({
         userId,
-        title: '인증샷',
-        content,
-        file: imageFile, // 파일 그대로 전송
+        challengeId,
       });
 
-      console.log('스냅 생성 성공:', res);
-      alert('참여 완료!');
+      // 스냅 생성하기
+      await snapAPI.create(challengeId, userId, {
+        title: '인증샷',
+        content,
+        snap: imageFile,
+      });
+
+      toast.success('챌린지 참여가 완료되었습니다!');
+      navigate(`/challenge-detail/${challengeId}`);
     } catch (err) {
-      console.error('스냅 생성 실패:', err);
-      alert('오류가 발생했습니다.');
+      console.error('챌린지 참여 실패:', err);
+      toast.error('챌린지 참여에 실패했습니다.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -159,7 +175,7 @@ const JoinChallengePage = () => {
           onClick={handleSubmit}
           className="fixed bottom-4 inset-x-4 h-14 py-3 rounded-xl bg-blue-400 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          완료하기
+          {isSubmitting ? '참여 중...' : '완료하기'}
         </button>
       </div>
     </div>
