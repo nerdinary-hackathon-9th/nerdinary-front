@@ -25,7 +25,7 @@ const LoginPage = () => {
     password: false,
   });
 
-  const [saveNickname, setSaveNickname] = useState(!!savedNickname);
+  const [saveNickname, ] = useState(!!savedNickname);
 
   const handleChange = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;

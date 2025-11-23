@@ -59,6 +59,7 @@ const JoinChallengePage = () => {
         content,
         file: imageFile, // 파일 그대로 전송
       });
+      console.log(res)
       navigate('/');
     } catch (err) {
       console.error('스냅 생성 실패:', err);
