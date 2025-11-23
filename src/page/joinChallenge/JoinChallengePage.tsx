@@ -10,7 +10,6 @@ import InfoIcon from '@/assets/grayInfoIcon.svg?react';
 import CameraIcon from '@/assets/grayCameraIcon.svg?react';
 
 const formatDotDateKorea = (iso: string) => {
-
   const date = new Date(iso);
   const korea = new Date(date.getTime() + 9 * 60 * 60 * 1000);
 
