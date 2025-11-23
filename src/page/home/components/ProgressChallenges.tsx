@@ -3,10 +3,13 @@ import RefreshIcon from '@/assets/refreshIcon.svg?react';
 interface ProgressChallengeItem {
   id: number;
   title: string;
-  imgSrc: string;
-  startDate: string;
-  endDate: string;
-  participant: number;
+  context: string;
+  thumbnailUrl: string;
+  createdAt: string;
+  endAt: string;
+  _count: {
+    participant: number;
+  };
 }
 
 interface ProgressChallengesProps {
@@ -32,7 +35,7 @@ export const ProgressChallenges = ({ items, onClickItem }: ProgressChallengesPro
             <div key={item.id} onClick={() => onClickItem?.(item.id)} className="cursor-pointer">
               {/* 이미지 영역 */}
               <div className="relative w-full h-32 rounded-[8px] overflow-hidden">
-                <img src={item.imgSrc} className="w-full h-full object-cover" alt={item.title} />
+                <img src={item.thumbnailUrl} className="w-full h-full object-cover" alt={item.title} />
 
                 {/* NEW / HOT 태그 */}
 
@@ -59,13 +62,13 @@ export const ProgressChallenges = ({ items, onClickItem }: ProgressChallengesPro
               {/* 날짜 */}
               <div className="flex items-center gap-1 mt-1 label-12 text-[#A0A2A7]">
                 <span>
-                  {item.startDate} ~ {item.endDate}
+                  {item.createdAt} ~ {item.endAt}
                 </span>
               </div>
 
               {/* 참여자 */}
               <div className="flex items-center gap-1 label-12 text-[#A0A2A7]">
-                <span>{item.participant}명 참여 중</span>
+                <span>{item._count.participant}명 참여 중</span>
               </div>
             </div>
           );

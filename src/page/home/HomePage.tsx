@@ -32,7 +32,7 @@ const HomePage = () => {
 
     fetchAll();
   }, []);
-
+  console.log(todayItems)
   return (
     <div className="min-h-screen">
       <Header variant="logo" />
