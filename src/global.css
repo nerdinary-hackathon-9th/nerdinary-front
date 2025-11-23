@@ -388,3 +388,8 @@ body,
 ::-webkit-scrollbar {
   display: none; /* 크롬, 사파리, 엣지 */
 }
+
+html, body {
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
+}
