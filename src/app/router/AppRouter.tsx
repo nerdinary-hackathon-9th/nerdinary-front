@@ -6,6 +6,7 @@ import SignUpPage from '@/page/auth/ui/SignUpPage';
 import MakeChallengePage from '@/page/makeChallenge/MakeChallengePage';
 import JoinChallengePage from '@/page/joinChallenge/JoinChallengePage';
 import ChallengeDetailPage from '@/page/challengeDetail/ChallengeDetailPage';
+import CreateSnapPage from '@/page/createSnap/CreateSnapPage';
 import MyPage from '@/page/mypage/MyPage';
 import ChallengeListPage from '@/page/challengeList/ChallengeListPage';
 
@@ -33,6 +34,10 @@ export const AppRouter = () => {
         {
           path: 'challenge-detail/:id/join',
           element: <JoinChallengePage />,
+        },
+        {
+          path: 'challenge-detail/:challengeId/create-snap',
+          element: <CreateSnapPage />,
         },
         {
           // Todo : api endpoint에 맞춰 path 수정해야 함!
