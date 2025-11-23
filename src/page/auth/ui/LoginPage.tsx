@@ -25,7 +25,7 @@ const LoginPage = () => {
     password: false,
   });
 
-  const [saveNickname, ] = useState(!!savedNickname);
+  const [saveNickname] = useState(!!savedNickname);
 
   const handleChange = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -105,6 +105,16 @@ const LoginPage = () => {
           >
             로그인
           </button>
+
+          <div className="text-center mb-6">
+            <span className="text-sihang-neutral-400 text-sm">아직 계정이 없으신가요? </span>
+            <button
+              onClick={() => navigate('/signup')}
+              className="text-sihang-primary-400 text-sm font-semibold underline"
+            >
+              회원가입
+            </button>
+          </div>
         </div>
       </section>
     </div>

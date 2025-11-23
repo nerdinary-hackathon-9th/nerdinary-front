@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { ChallengeCardAtMyPage } from './ChallengeCardAtMyPage';
 import { userGet } from '@/api/user/user-get';
+import { useNavigate } from 'react-router-dom';
 
 export const JoinList = () => {
+  const navigate = useNavigate();
   const [list, setList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -44,6 +46,7 @@ export const JoinList = () => {
           image={item.thumbnailUrl}
           content={item.context}
           participant={item._count.participants}
+          onClick={() => navigate(`/challenge-detail/${item.id}`)}
         />
       ))}
     </div>

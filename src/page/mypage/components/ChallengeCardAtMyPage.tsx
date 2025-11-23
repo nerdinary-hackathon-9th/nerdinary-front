@@ -11,6 +11,14 @@ interface ChallengeCardAtMyPageProps {
   onClick?: () => void;
 }
 
+const formatDotDate = (iso: string) => {
+  const d = new Date(iso);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}.${month}.${day}`;
+};
+
 export const ChallengeCardAtMyPage = ({
   title,
   startDate,
@@ -55,7 +63,7 @@ export const ChallengeCardAtMyPage = ({
           <div className="flex items-center gap-1 text-[13px] text-[#A0A2A7]">
             <CalendarIcon className="w-4 h-4" />
             <span>
-              {startDate} ~ {endDate}
+              {formatDotDate(startDate)} ~ {formatDotDate(endDate)}
             </span>
           </div>
         </div>
