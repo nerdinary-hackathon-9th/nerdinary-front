@@ -94,7 +94,7 @@ const ChallengeListPage = () => {
             title={item.title}
             imgSrc={item.thumbnailUrl}
             startDate={item.createdAt.slice(0, 10).replace(/-/g, '.')}
-            endDate={item.endAt.slice(0, 10).replace(/-/g, '.')}
+            endDate={item.endAt ? item.endAt.slice(0, 10).replace(/-/g, '.') : '미정'}
             participant={item._count.participants}
           />
         ))}

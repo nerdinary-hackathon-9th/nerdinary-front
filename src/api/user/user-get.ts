@@ -22,11 +22,16 @@ export interface ParticipatingChallengeResponse {
   };
 }
 
+export interface CreatedChallengesResponse {
+  challenges: Challenge[];
+}
+
 export interface CheckNickNameResponse {
   isAvailable: boolean;
 }
 
 export type ParticipatingChallengeResponseDTO = ApiResponse<ParticipatingChallengeResponse>;
+export type CreatedChallengesResponseDTO = ApiResponse<CreatedChallengesResponse>;
 export type CheckNickNameResponseDTO = ApiResponse<CheckNickNameResponse>;
 
 /* ===========================
@@ -42,6 +47,18 @@ export const userGet = {
     const response = await api
       .get(`api/user/${userId}/participate`)
       .json<ParticipatingChallengeResponseDTO>();
+    return response;
+  },
+
+  // 내가 만든 챌린지 get
+  getCreatedChallenges: async ({
+    userId,
+  }: {
+    userId: number;
+  }): Promise<CreatedChallengesResponseDTO> => {
+    const response = await api
+      .get(`api/user/${userId}/created`)
+      .json<CreatedChallengesResponseDTO>();
     return response;
   },
 

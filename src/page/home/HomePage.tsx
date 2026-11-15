@@ -13,20 +13,25 @@ const HomePage = () => {
   const [hotItems, setHotItems] = useState<any[]>([]);
   const [todayItems, setTodayItems] = useState<any[]>([]);
 
-  const [, setLoading] = useState(true);
+  const fetchToday = async () => {
+    try {
+      const todayRes = await challengeGet.getTodayChallenge();
+      setTodayItems(todayRes.data);
+    } catch (err) {
+      console.error('진행중인 챌린지 불러오기 실패:', err);
+    }
+  };
 
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const hotRes = await challengeGet.getHotChallenge();
+        const [hotRes] = await Promise.all([
+          challengeGet.getHotChallenge(),
+          fetchToday(),
+        ]);
         setHotItems(hotRes.data);
-
-        const todayRes = await challengeGet.getTodayChallenge();
-        setTodayItems(todayRes.data);
       } catch (err) {
         console.error('홈 데이터 불러오기 실패:', err);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -54,6 +59,7 @@ const HomePage = () => {
           <ProgressChallenges
             items={todayItems}
             onClickItem={(id) => navigate(`/challenge-detail/${id}`)}
+            onRefresh={fetchToday}
           />
         </div>
       </div>

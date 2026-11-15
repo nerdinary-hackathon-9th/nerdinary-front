@@ -66,11 +66,14 @@ const MakeChallengePageInner = () => {
       // endDate → ISO UTC 변환
       const endAtUTC = toSeoulUTCString(endDate);
 
+      const creatorId = Number(localStorage.getItem('userId')) || null;
+
       const res = await challengePost.makeChallenge({
         title,
         context: content,
         endAt: endAtUTC,
         thumbnailUrl,
+        creatorId,
       });
 
       console.log('챌린지 생성 성공:', res);

@@ -17,11 +17,9 @@ interface HotChallengesScrollProps {
   onClickItem?: (id: number) => void;
 }
 
-const formatDotDateKorea = (iso: string) => {
-  const date = new Date(iso);
-  const korea = new Date(date.getTime() + 9 * 60 * 60 * 1000);
-
-  return korea.toISOString().slice(0, 10).replace(/-/g, '.');
+const formatDate = (iso: string | null) => {
+  if (!iso) return '미정';
+  return iso.slice(0, 10).replace(/-/g, '.');
 };
 
 export const HotChallenges = ({ items, onClickItem }: HotChallengesScrollProps) => {
@@ -69,7 +67,7 @@ export const HotChallenges = ({ items, onClickItem }: HotChallengesScrollProps) 
             {/* 날짜 */}
             <div className="flex items-center gap-1 label-12 text-[#A0A2A7] mt-1">
               <span>
-                {formatDotDateKorea(item.createdAt)} ~ {formatDotDateKorea(item.endAt)}
+                {formatDate(item.createdAt)} ~ {formatDate(item.endAt)}
               </span>
             </div>
 

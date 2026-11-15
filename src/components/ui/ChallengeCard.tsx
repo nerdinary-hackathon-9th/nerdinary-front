@@ -15,6 +15,13 @@ interface ChallengeCardProps {
   challengeId: number;
 }
 
+const API_URL = import.meta.env.VITE_PUBLIC_API_URL || '';
+
+const resolveImageUrl = (src: string) => {
+  if (!src) return src;
+  return src.startsWith('/') ? `${API_URL}${src}` : src;
+};
+
 const ChallengeCard = ({
   title,
   imgSrc,
@@ -57,7 +64,7 @@ const ChallengeCard = ({
         <div
           className={clsx('w-24 h-24 object-cover rounded-md', imgSrc || 'bg-sihang-neutral-100')}
         >
-          <img src={imgSrc} className="w-full h-full object-cover rounded-md" />
+          <img src={resolveImageUrl(imgSrc)} className="w-full h-full object-cover rounded-md" />
         </div> 
       </div>
       <div className="flex flex-col gap-1">

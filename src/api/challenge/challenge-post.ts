@@ -1,10 +1,6 @@
 import { api } from '@/lib/ky';
 import type { ApiResponse } from '@/types/common';
 
-/* ===========================
-     Model
-=========================== */
-
 export interface MakeChallengeReseponse {
   id: number;
   title: string;
@@ -15,9 +11,6 @@ export interface MakeChallengeReseponse {
 }
 
 export type MakeChallengeReseponseDTO = ApiResponse<MakeChallengeReseponse>;
-/* ===========================
-     Handlers
-=========================== */
 
 export const challengePost = {
   makeChallenge: async ({
@@ -25,21 +18,29 @@ export const challengePost = {
     context,
     endAt,
     thumbnailUrl,
+    creatorId,
   }: {
     title: string;
     context: string;
     endAt: string;
     thumbnailUrl: string;
-  }) => {
-    const response = await api.post('api/challenge/create', {
-      json: {
-        title,
-        context,
-        endAt,
-        thumbnailUrl,
-      },
-    });
+    creatorId: number | null;
+  }): Promise<MakeChallengeReseponseDTO> => {
+    return api
+      .post('api/challenge/create', { json: { title, context, endAt, thumbnailUrl, creatorId } })
+      .json<MakeChallengeReseponseDTO>();
+  },
 
-    return response;
+  updateChallenge: async (
+    challengeId: number,
+    data: { title?: string; context?: string; endAt?: string; thumbnailUrl?: string },
+  ): Promise<MakeChallengeReseponseDTO> => {
+    return api
+      .put(`api/challenge/${challengeId}`, { json: data })
+      .json<MakeChallengeReseponseDTO>();
+  },
+
+  deleteChallenge: async (challengeId: number): Promise<void> => {
+    await api.delete(`api/challenge/${challengeId}`);
   },
 };
