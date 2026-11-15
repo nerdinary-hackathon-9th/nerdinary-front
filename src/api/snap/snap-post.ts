@@ -1,5 +1,6 @@
-import { apiVer2 } from '@/lib/ky';
 import type { ApiResponse } from '@/types/common';
+
+const BASE_URL = import.meta.env.VITE_PUBLIC_API_URL || '';
 
 /* ===========================
      Model
@@ -58,13 +59,17 @@ export const snapPost = {
     }
 
     // (3) multipart 전송 (Content-Type 강제 지정하면 안 됨)
-    return apiVer2
-      .post(`api/snap/${challengeId}/${userId}`, {
-        body: formData,
-        headers: {
-          'Content-Type': undefined, // ky 기본 application/json 무효화
-        },
-      })
-      .json<MakeSnapResponseDTO>();
+    const res = await fetch(`${BASE_URL}/api/snap/${challengeId}/${userId}`, {
+      method: 'POST',
+      body: formData,
+      // Content-Type 설정 금지 — 브라우저가 boundary 포함해서 자동 설정
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message ?? `HTTP ${res.status}`);
+    }
+
+    return res.json() as Promise<MakeSnapResponseDTO>;
   },
 };

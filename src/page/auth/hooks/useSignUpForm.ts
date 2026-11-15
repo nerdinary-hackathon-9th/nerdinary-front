@@ -39,14 +39,16 @@ export const useSignUpForm = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedValues(form);
-
-      // 닉네임이 변경되면 중복확인 초기화
-      setIsNicknameChecked(false);
-      setNicknameCheckMessage(null);
     }, 400);
 
     return () => clearTimeout(timer);
   }, [form.nickname, form.password, form.confirmPassword]);
+
+  // 닉네임이 변경되면 중복확인 초기화
+  useEffect(() => {
+    setIsNicknameChecked(false);
+    setNicknameCheckMessage(null);
+  }, [form.nickname]);
 
   const handleChange = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;

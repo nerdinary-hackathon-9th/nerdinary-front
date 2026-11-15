@@ -28,17 +28,6 @@ export const ChallengeCardAtMyPage = ({
   participant = 0,
   onClick,
 }: ChallengeCardAtMyPageProps) => {
-  const isHot = participant >= 100;
-
-  // NEW 기준 (startDate가 오늘과 동일)
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const start = new Date(startDate);
-  start.setHours(0, 0, 0, 0);
-
-  const isNew = start.getTime() >= today.getTime();
-
   return (
     <div
       onClick={onClick}
@@ -49,10 +38,6 @@ export const ChallengeCardAtMyPage = ({
     >
       {/* TOP: Title + Arrow */}
       <div className="flex-1 items-start justify-between mb-2">
-        <div className="flex gap-1 mb-1">
-          {isHot && <HotBadge />}
-          {isNew && <NewBadge />}
-        </div>
         <div className="flex flex-col gap-1">
           <div className="flex items-center justify-between gap-2">
             <p className="text-[18px] font-semibold text-neutral-900">{title}</p>
@@ -115,12 +100,12 @@ export const NewBadge = () => {
       <div
         className="
           px-2 py-1 rounded-md
-          bg-white 
-          text-[10px] leading-[140%] font-normal 
-          text-[#5EBEF8] 
+          bg-white
+          text-[10px] leading-[140%] font-normal
+          text-[#5EBEF8]
         "
       >
-        HOT
+        NEW
       </div>
     </div>
   );

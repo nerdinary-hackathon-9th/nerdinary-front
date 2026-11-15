@@ -18,7 +18,12 @@ export interface SnapResponse {
 }
 
 export interface ChallengeSnapItem {
+  id: number;
   imageUrl: string;
+  title: string;
+  content: string;
+  userId: number | null;
+  user: { nickname: string } | null;
 }
 
 export type SnapResponseDTO = ApiResponse<SnapResponse>;

@@ -9,17 +9,19 @@ const MyPage = () => {
   const [tab, setTab] = useState<'left' | 'right'>('left');
 
   return (
-    <div className="min-h-screen">
+    <div className="flex flex-col h-screen">
       <Header variant="back-text" title="마이페이지" />
       <div className="border-b-[0.5px] border-[#F3F3F5]" />
 
       {/* 토글 */}
-      <div className="mt-6 flex justify-center">
+      <div className="mt-6 flex justify-center flex-shrink-0">
         <SegmentedToggle leftLabel="참여중인" rightLabel="내가 만든" onChange={(v) => setTab(v)} />
       </div>
 
-      {/* 래핑: 페이지 컨텐츠 */}
-      <div className="px-5 mt-5 mb-24">{tab === 'left' ? <JoinList /> : <MadeList />}</div>
+      {/* 스크롤 가능한 컨텐츠 영역 */}
+      <div className="flex-1 overflow-y-auto px-5 mt-5 pb-24">
+        {tab === 'left' ? <JoinList /> : <MadeList />}
+      </div>
 
       <GlobalNavigationBar />
     </div>

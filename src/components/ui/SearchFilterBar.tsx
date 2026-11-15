@@ -11,9 +11,7 @@ interface SearchFilterBarProps {
 
 const filterOptions: SelectOption[] = [
   { value: 'new', label: '최신순' },
-  { value: 'old', label: '오래된 순' },
   { value: 'most', label: '참여자 많은 순' },
-  { value: 'least', label: '참여자 적은 순' },
 ];
 
 const SearchFilterBar = ({
